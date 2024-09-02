@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface FindByName {
     //find by Name
-    List<Contact> findContactByFirstName(String name);
-    List<Contact> findContactByMiddleName(String name);
-    List<Contact> findContactByLastName(String name);
+    List<Contact> findContactByFirstName(String firstName);
+    List<Contact> findContactByMiddleName(String middleName);
+    List<Contact> findContactByLastName(String lastName);
     List<Contact> findContactByNickName(String nickname);
 }
