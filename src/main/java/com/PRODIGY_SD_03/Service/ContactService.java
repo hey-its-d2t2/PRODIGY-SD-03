@@ -34,6 +34,8 @@ public interface ContactService {
     List<Contact> findContactByPrimaryPhone(String priNumber);
     List<Contact> findContactBySecondaryPhone(String secNumber);
 
+    //Find By address
+    List<Contact> findContactByAddress(String address);
 
     List<Contact> findContactsByCompany(String company);
 
