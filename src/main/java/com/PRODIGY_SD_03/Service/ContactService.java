@@ -17,16 +17,23 @@ public interface ContactService {
 
     void deleteContact(Long id);
 
-    List<Contact> findContactByName(String name);
+    //find by Name
+    List<Contact> findContactByFirstName(String name);
+    List<Contact> findContactByMiddleName(String name);
+    List<Contact> findContactByLastName(String name);
     List<Contact> findContactByNickName(String nickname);
 
+    //Find by Birth Date
     List<Contact> findContactByBirthday(String birthday);
 
+    //Find by Email
     List<Contact> findContactByEmail(String email);
     List<Contact> findContactBySecEmail(String secEmail);
 
+    //Find by Phone Number
     List<Contact> findContactByPrimaryPhone(String priNumber);
     List<Contact> findContactBySecondaryPhone(String secNumber);
+
 
     List<Contact> findContactsByCompany(String company);
 
