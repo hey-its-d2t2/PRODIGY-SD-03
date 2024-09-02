@@ -21,7 +21,14 @@ public class Contact {
 
     @NotBlank(message = "Name is required")
     @Size(max = 100, min = 3, message = "Name must be between 3 and 100 characters.")
-    private String name;
+    private String firstName;
+
+    @Size(max = 100, min = 3, message = "Middle Name must be between 3 and 100 characters.")
+    private String middleName;
+
+    @NotBlank(message = "Name is required")
+    @Size(max = 100, min = 3, message = "Last Name must be between 3 and 100 characters.")
+    private String lastName;
 
     @NotBlank(message = "Primary phone number is required")
     @Pattern(regexp = "\\d{10}", message = "Phone number must be 10 digits")
