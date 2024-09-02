@@ -67,13 +67,12 @@ public class ContactServiceImpl implements ContactService {
        }
     }
 
-
-// ---------
     @Override
     public void deleteContact(Long id) {
-
+            contactRepository.deleteById(id);
     }
 
+    //-------
     @Override
     public List<Contact> findContactByFirstName(String name) {
         return List.of();
