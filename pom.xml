@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.PRODIGY-SD-03</groupId>
-	<artifactId>PRODIGY-SD-01-Internship</artifactId>
+	<artifactId>PRODIGY-SD-03-Internship</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>PRODIGY-SD-03-Internship</name>
 	<description>Simple Contact Management System: Developed as part of my Prodigy Infotech internship using Java, Spring Boot, JSP, Servlets, Thymeleaf, and MySQL. The system allows users to add, view, edit, and delete contacts, with persistent storage in MySQL. It showcases efficient contact management with a user-friendly interface.</description>
