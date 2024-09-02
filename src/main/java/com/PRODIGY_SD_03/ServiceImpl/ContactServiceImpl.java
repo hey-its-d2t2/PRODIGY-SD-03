@@ -120,6 +120,11 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
+    public List<Contact> findContactByAddress(String address) {
+        return List.of();
+    }
+
+    @Override
     public List<Contact> findContactsByCompany(String company) {
         return List.of();
     }
