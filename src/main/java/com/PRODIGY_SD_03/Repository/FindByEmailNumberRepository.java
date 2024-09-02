@@ -3,6 +3,7 @@ package com.PRODIGY_SD_03.Repository;
 import com.PRODIGY_SD_03.Entity.Contact;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,6 +22,10 @@ public interface FindByEmailNumberRepository extends JpaRepository<Contact, Long
     @Query("SELECT c FROM Contact c WHERE c.primaryPhoneNumber = :priNumber")
     List<Contact> findContactByPrimaryPhone(String priNumber);
 
+/*    @Query("SELECT c FROM Contact c WHERE c.secondaryPhoneNumber = :secNumber")
+    List<Contact> findContactBySecondaryPhone(String secNumber);*/
+
     @Query("SELECT c FROM Contact c WHERE c.secondaryPhoneNumber = :secNumber")
-    List<Contact> findContactBySecondaryPhone(String secNumber);
+    List<Contact> findContactBySecondaryPhone(@Param("secNumber") String secNumber);
+
 }
