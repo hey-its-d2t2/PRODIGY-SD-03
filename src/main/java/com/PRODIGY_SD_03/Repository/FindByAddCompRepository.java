@@ -2,11 +2,12 @@ package com.PRODIGY_SD_03.Repository;
 
 import com.PRODIGY_SD_03.Entity.Contact;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController
+@Repository
 public interface FindByAddCompRepository extends JpaRepository<Contact, Long> {
 
     List<Contact> findContactByAddress(String address);
