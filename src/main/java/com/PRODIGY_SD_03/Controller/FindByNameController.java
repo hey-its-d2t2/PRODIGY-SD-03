@@ -1,6 +1,7 @@
 package com.PRODIGY_SD_03.Controller;
 
 import com.PRODIGY_SD_03.Entity.Contact;
+import com.PRODIGY_SD_03.Service.FindByName;
 import com.PRODIGY_SD_03.ServiceImpl.FindByNameImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,7 @@ import java.util.List;
 public class FindByNameController {
 
     @Autowired
-    FindByNameImpl findByName;
+    FindByName findByName;
 
     @GetMapping("/findByFirstName/{firstName}")
     public ResponseEntity<List<Contact>> findContactsByFirstName(@PathVariable("firstName") String firstName) {

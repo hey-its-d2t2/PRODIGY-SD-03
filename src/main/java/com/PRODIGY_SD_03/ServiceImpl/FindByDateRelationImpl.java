@@ -22,7 +22,7 @@ public class FindByDateRelationImpl implements FindByDateRelation {
         try {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             java.sql.Date sqlDate = new java.sql.Date(format.parse(birthday).getTime());
-            return repository.findContactByBirthday(Date.valueOf(String.valueOf(sqlDate)));
+            return repository.findContactByBirthdayContaining(sqlDate);
         } catch (ParseException e) {
             e.printStackTrace();
             return null;
@@ -31,6 +31,6 @@ public class FindByDateRelationImpl implements FindByDateRelation {
 
     @Override
     public List<Contact> findContactsByRelationship(String relationship) {
-        return repository.findContactsByRelationship(relationship);
+        return repository.findContactsByRelationshipContainingIgnoreCase(relationship);
     }
 }

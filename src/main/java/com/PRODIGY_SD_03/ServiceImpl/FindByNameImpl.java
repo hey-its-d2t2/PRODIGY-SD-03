@@ -15,21 +15,21 @@ public class FindByNameImpl implements FindByName {
 
     @Override
     public List<Contact> findContactByFirstName(String firstName) {
-        return nameRepository.findByFirstName(firstName);
+        return nameRepository.findByFirstNameContainingIgnoreCase(firstName);
     }
 
     @Override
     public List<Contact> findContactByMiddleName(String middleName) {
-        return nameRepository.findByMiddleName(middleName);
+        return nameRepository.findByMiddleNameContainingIgnoreCase(middleName);
     }
 
     @Override
     public List<Contact> findContactByLastName(String lastName) {
-        return nameRepository.findByLastName(lastName);
+        return nameRepository.findByLastNameContainingIgnoreCase(lastName);
     }
 
    @Override
     public List<Contact> findContactByNickName(String nickname) {
-        return nameRepository.findBynickname(nickname);
+        return nameRepository.findByNicknameContainingIgnoreCase(nickname);
     }
 }

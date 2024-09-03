@@ -16,21 +16,21 @@ public class FindByEmailNumberImpl implements FindByEmailNumber {
 
     @Override
     public List<Contact> findContactByEmail(String email) {
-        return service.findContactByEmail(email);
+        return service.findContactByEmailContainingIgnoreCase(email);
     }
 
     @Override
     public List<Contact> findContactBySecEmail(String secEmail) {
-        return service.findContactBySecEmail(secEmail);
+        return service.findContactBySecEmailContainingIgnoreCase(secEmail);
     }
 
     @Override
     public List<Contact> findContactByPrimaryPhone(String priNumber) {
-        return service.findContactByPrimaryPhone(priNumber);
+        return service.findContactByPrimaryPhoneContainingIgnoreCase(priNumber);
     }
 
     @Override
     public List<Contact> findContactBySecondaryPhone(String secNumber) {
-        return service.findContactBySecondaryPhone(secNumber);
+        return service.findContactBySecondaryPhoneContainingIgnoreCase(secNumber);
     }
 }

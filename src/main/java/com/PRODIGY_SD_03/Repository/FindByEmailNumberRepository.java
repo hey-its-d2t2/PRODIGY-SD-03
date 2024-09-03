@@ -11,7 +11,25 @@ import java.util.List;
 @Repository
 public interface FindByEmailNumberRepository extends JpaRepository<Contact, Long> {
 
-    @Query("SELECT c FROM Contact c WHERE c.primaryEmailAddress = :email")
+
+    // Find by Primary Email Address (Partial and Case-Insensitive)
+    @Query("SELECT c FROM Contact c WHERE LOWER(c.primaryEmailAddress) LIKE LOWER(CONCAT('%', :email, '%'))")
+    List<Contact> findContactByEmailContainingIgnoreCase(@Param("email") String email);
+
+    // Find by Secondary Email Address (Partial and Case-Insensitive)
+    @Query("SELECT c FROM Contact c WHERE LOWER(c.secondaryEmailAddress) LIKE LOWER(CONCAT('%', :secEmail, '%'))")
+    List<Contact> findContactBySecEmailContainingIgnoreCase(@Param("secEmail") String secEmail);
+
+    // Find by Primary Phone Number (Partial and Case-Insensitive)
+    @Query("SELECT c FROM Contact c WHERE LOWER(c.primaryPhoneNumber) LIKE LOWER(CONCAT('%', :priNumber, '%'))")
+    List<Contact> findContactByPrimaryPhoneContainingIgnoreCase(@Param("priNumber") String priNumber);
+
+    // Find by Secondary Phone Number (Partial and Case-Insensitive)
+    @Query("SELECT c FROM Contact c WHERE LOWER(c.secondaryPhoneNumber) LIKE LOWER(CONCAT('%', :secNumber, '%'))")
+    List<Contact> findContactBySecondaryPhoneContainingIgnoreCase(@Param("secNumber") String secNumber);
+
+
+  /*  @Query("SELECT c FROM Contact c WHERE c.primaryEmailAddress = :email")
     List<Contact> findContactByEmail(String email);
 
     @Query("SELECT c FROM Contact c WHERE c.secondaryEmailAddress = :secEmail")
@@ -22,10 +40,10 @@ public interface FindByEmailNumberRepository extends JpaRepository<Contact, Long
     @Query("SELECT c FROM Contact c WHERE c.primaryPhoneNumber = :priNumber")
     List<Contact> findContactByPrimaryPhone(String priNumber);
 
-/*    @Query("SELECT c FROM Contact c WHERE c.secondaryPhoneNumber = :secNumber")
-    List<Contact> findContactBySecondaryPhone(String secNumber);*/
+*//*    @Query("SELECT c FROM Contact c WHERE c.secondaryPhoneNumber = :secNumber")
+    List<Contact> findContactBySecondaryPhone(String secNumber);*//*
 
     @Query("SELECT c FROM Contact c WHERE c.secondaryPhoneNumber = :secNumber")
-    List<Contact> findContactBySecondaryPhone(@Param("secNumber") String secNumber);
+    List<Contact> findContactBySecondaryPhone(@Param("secNumber") String secNumber);*/
 
 }

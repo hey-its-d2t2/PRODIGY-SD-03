@@ -21,37 +21,37 @@ public class FindByAddCompImpl implements FindByAddComp {
 
     @Override
     public List<Contact> findContactByAddress(String address) {
-        return findByAddCompRepository.findContactByAddress(address);
+        return findByAddCompRepository.findContactByAddressContainingIgnoreCase(address);
     }
 
     @Override
     public List<Contact> findContactsByCompany(String company) {
-        return findByAddCompRepository.findContactsByCompany(company);
+        return findByAddCompRepository.findContactsByCompanyContainingIgnoreCase(company);
     }
 
     @Override
     public List<Contact> findContactsByJobTitle(String jobTitle) {
         this.jobTitle = jobTitle;
-        return findByAddCompRepository.findContactsByJobTitle(jobTitle);
+        return findByAddCompRepository.findContactsByJobTitleContainingIgnoreCase(jobTitle);
     }
 
     @Override
     public List<Contact> findContactsByLabel(String label) {
-        return findByAddCompRepository.findContactsByLabel(label);
+        return findByAddCompRepository.findContactsByLabelContainingIgnoreCase(label);
     }
 
     @Override
     public List<Contact> findContactsByDepartment(String department) {
-        return findByAddCompRepository.findContactsByDepartment(department);
+        return findByAddCompRepository.findContactsByDepartmentContainingIgnoreCase(department);
     }
 
     @Override
     public List<Contact> findContactsByOfficeLocation(String officeLocation) {
-        return findByAddCompRepository.findContactsByOfficeLocation(officeLocation);
+        return findByAddCompRepository.findContactsByOfficeLocationContainingIgnoreCase(officeLocation);
     }
 
     @Override
     public List<Contact> findContactsByLanguage(String language) {
-        return findByAddCompRepository.findContactsByLanguage(language);
+        return findByAddCompRepository.findContactsByLanguageContainingIgnoreCase(language);
     }
 }
