@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-    @RequestMapping("api/contacts/address")
+@RequestMapping("api/contacts/address")
 public class FindByAddCompController {
 
     @Autowired

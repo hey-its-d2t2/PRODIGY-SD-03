@@ -1,0 +1,87 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    padding: 20px;
+}
+
+.contact-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 1rem;
+    width: 100%;
+    max-width: 300px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.contact-card img {
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    margin-bottom: 15px;
+}
+
+.contact-card h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.contact-card p {
+    margin: 5px 0;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.contact-card button {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.contact-card button:hover {
+    background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+    .contact-card {
+        width: 90%;
+    }
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    background-color: #007bff;
+    padding: 10px 20px;
+}
+
+nav .btn {
+    color: white;
+    background-color: #0056b3;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+nav .btn:hover {
+    background-color: #003d7e;
+}
+
+nav input[type="text"] {
+    padding: 7px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}

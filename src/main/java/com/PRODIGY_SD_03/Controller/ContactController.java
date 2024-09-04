@@ -5,6 +5,7 @@ import com.PRODIGY_SD_03.Service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,7 +16,14 @@ public class ContactController {
 
     @Autowired
     ContactService contactService;
-
+/*
+    //@GetMapping("/contacts")
+    @GetMapping
+    public String viewContacts(Model model) {
+        List<Contact> contact = contactService.getAllContact();
+        model.addAttribute("contact", contact);
+        return "contact.html"; // returns the contacts.html template
+    }*/
     @GetMapping("/getAllContacts")
     public ResponseEntity<List<Contact>> getAllContacts() {
         List<Contact> contacts = contactService.getAllContact();

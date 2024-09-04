@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Management</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .contact-card {
+            margin: 10px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-card img {
+            max-width: 100px;
+            border-radius: 50%;
+        }
+
+        .contact-actions {
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .contact-card {
+                width: 90%;
+            }
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            background-color: #007bff;
+            padding: 10px 20px;
+        }
+
+        nav .btn {
+            color: white;
+            background-color: #0056b3;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        nav .btn:hover {
+            background-color: #003d7e;
+        }
+
+        nav input[type="text"] {
+            padding: 7px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="#" class="btn">Add Contact</a>
+    <form method="get" action="#" th:action="@{/api/contacts/search}">
+        <input type="text" name="search" placeholder="Search Contacts..." />
+        <button type="submit" class="btn">Search</button>
+    </form>
+</nav>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Contacts</h2>
+            <div class="row">
+                <div class="col-md-4" th:each="contact : ${contacts}">
+                    <div class="contact-card">
+                        <img th:src="@{${contact.photoUrl}}" alt="Contact Photo">
+                        <h5 th:text="${contact.firstName} + ' ' + ${contact.lastName}"></h5>
+                        <p th:text="${contact.company}"></p>
+                        <p th:text="${contact.jobTitle}"></p>
+                        <p th:text="${contact.primaryPhoneNumber}"></p>
+                        <p th:text="${contact.primaryEmailAddress}"></p>
+
+                        <div class="contact-actions">
+                            <a th:href="@{/api/contacts/getContactsById/{id}(id=${contact.id})}" class="btn btn-info">View</a>
+                            <a th:href="@{/api/contacts/updateContact/{id}(id=${contact.id})}" class="btn btn-warning">Edit</a>
+                            <a th:href="@{/api/contacts/deleteContact/{id}(id=${contact.id})}" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
