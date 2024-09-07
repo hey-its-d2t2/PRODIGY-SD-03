@@ -1,120 +1,162 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Management</title>
-    <link href="/Styles.css" rel="stylesheet">
+    <title>Contact Management System</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <style>
+        .navbar-custom {
+            background-color: #007bff;
+        }
+        .navbar-custom .navbar-brand, .navbar-custom .nav-link {
+            color: white;
+        }
+        .navbar-custom .nav-link:hover {
+            color: #f8f9fa;
+        }
+        .contact-card {
+            border: 1px solid #e3e3e3;
+            border-radius: 0.25rem;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+            position: relative;
+        }
+        .contact-card img {
+            border-radius: 50%;
+            margin-bottom: 10px;
+            width: 100px;
+            height: 100px;
+        }
+        .contact-card h4 {
+            text-align: center;
+        }
+        .contact-card .btn-view {
+            position: absolute;
+            bottom: 15px;
+            left: 0;
+            right: 0;
+            width: 100%;
+        }
+        .modal-header {
+            background-color: #007bff;
+            color: white;
+        }
+        .modal-footer .btn {
+            margin: 0 5px;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a class="navbar-brand" href="#">Contact Manager</a>
-    <a class="btn btn-light ml-auto" href="#" data-toggle="modal" data-target="#addContactModal">Add Contact</a>
+<nav class="navbar navbar-expand-lg navbar-custom">
+    <a class="navbar-brand" href="#">Contact Management</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-        <form method="get" action="#" th:action="@{/api/contacts/name/findByFirstName/}" class="form-inline ml-auto">
-            <select name="searchBy" class="form-control mr-2">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-toggle="modal" data-target="#addContactModal">Add Contact</a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <select class="form-control mr-sm-2" id="searchSelect">
                 <option value="firstName">First Name</option>
                 <option value="middleName">Middle Name</option>
                 <option value="lastName">Last Name</option>
-                <option value="nickname">Nickname</option>
                 <option value="email">Email</option>
                 <option value="phone">Phone</option>
             </select>
-            <input type="text" name="search" placeholder="Search Contacts..." class="form-control mr-2" />
-            <button type="submit" class="btn btn-light">Search</button>
+            <input class="form-control mr-sm-2" type="search" id="searchBox" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-light my-2 my-sm-0" type="button" onclick="searchContacts()">Search</button>
         </form>
     </div>
 </nav>
 
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-12">
-            <h2 class="text-center">Contacts</h2>
-            <div class="row">
-                <div class="col-md-4 mb-4" th:each="contact : ${contacts}">
-                    <div class="contact-card">
-                        <img th:src="@{${contact.photoUrl}}" alt="Contact Photo">
-                        <div class="contact-info">
-                            <h5 th:text="${contact.firstName} + ' ' + ${contact.middleName} + ' ' + ${contact.lastName}"></h5>
-                            <p th:text="${contact.company}"></p>
-                            <p th:text="${contact.jobTitle}"></p>
-                            <p th:text="${contact.primaryEmailAddress}"></p>
-                        </div>
-                        <button type="button" class="btn btn-info btn-block mt-3" data-toggle="modal" data-target="#contactModal" th:data-contact-id="${contact.id}">View</button>
+<div class="container mt-4">
+    <h2>Contact List</h2>
+    <div class="row" id="contactList">
+        <!-- Contacts will be dynamically inserted here -->
+    </div>
+</div>
+
+<!-- View Contact Modal -->
+<div class="modal fade" id="viewContactModal" tabindex="-1" role="dialog" aria-labelledby="viewContactModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewContactModalLabel">View Contact</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="viewContactDetails">
+                <!-- Contact details will be dynamically inserted here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="editContactButton">Edit</button>
+                <button type="button" class="btn btn-danger" id="deleteContactButton">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Contact Modal -->
+<div class="modal fade" id="editContactModal" tabindex="-1" role="dialog" aria-labelledby="editContactModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editContactModalLabel">Edit Contact</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="editContactForm">
+                <div class="modal-body">
+                    <input type="hidden" id="editContactId">
+                    <!-- Form fields for editing -->
+                    <div class="form-group">
+                        <label for="editFirstName">First Name</label>
+                        <input type="text" class="form-control" id="editFirstName" required>
                     </div>
+                    <div class="form-group">
+                        <label for="editMiddleName">Middle Name</label>
+                        <input type="text" class="form-control" id="editMiddleName">
+                    </div>
+                    <div class="form-group">
+                        <label for="editLastName">Last Name</label>
+                        <input type="text" class="form-control" id="editLastName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editPrimaryPhoneNumber">Primary Phone Number</label>
+                        <input type="text" class="form-control" id="editPrimaryPhoneNumber">
+                    </div>
+                    <div class="form-group">
+                        <label for="editPrimaryEmailAddress">Primary Email Address</label>
+                        <input type="email" class="form-control" id="editPrimaryEmailAddress">
+                    </div>
+                    <div class="form-group">
+                        <label for="editAddress">Address</label>
+                        <input type="text" class="form-control" id="editAddress">
+                    </div>
+                    <!-- Add more fields as needed -->
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!--
- Modal for contact details
-<div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="contactModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="contactModalLabel">Contact Details</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" id="contactDetails">
-                &lt;!&ndash; Contact details will be loaded here &ndash;&gt;
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" id="updateButton" class="btn btn-warning">Update</button>
-                <button type="button" id="deleteButton" class="btn btn-danger">Delete</button>
-            </div>
-        </div>
-    </div>
-</div>
--->
-<!-- Modal for contact details -->
-<div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="contactModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="contactModalLabel">Contact Details</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" id="contactDetails">
-                <!-- Contact details will be dynamically loaded here -->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" id="updateButton" class="btn btn-warning">Update</button>
-                <button type="button" id="deleteButton" class="btn btn-danger">Delete</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Delete Confirmation Modal -->
-<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteConfirmationLabel">Confirm Deletion</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to delete this contact?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" id="confirmDeleteButton" class="btn btn-danger">Delete</button>
-            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -124,318 +166,178 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addContactModalLabel">Add New Contact</h5>
+                <h5 class="modal-title" id="addContactModalLabel">Add Contact</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <form id="addContactForm" method="post" action="/api/contacts/addContact">
-                    <!-- form fields... -->
+            <form id="addContactForm">
+                <div class="modal-body">
+                    <!-- Form fields for adding -->
                     <div class="form-group">
-                        <label for="firstName">First Name</label>
-                        <input type="text" id="firstName" name="firstName" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="middleName">Middle Name</label>
-                        <input type="text" id="middleName" name="middleName" class="form-control">
+                        <label for="addFirstName">First Name</label>
+                        <input type="text" class="form-control" id="addFirstName" required>
                     </div>
                     <div class="form-group">
-                        <label for="lastName">Last Name</label>
-                        <input type="text" id="lastName" name="lastName" class="form-control" required>
+                        <label for="addMiddleName">Middle Name</label>
+                        <input type="text" class="form-control" id="addMiddleName">
                     </div>
                     <div class="form-group">
-                        <label for="primaryEmailAddress">Primary Email Address</label>
-                        <input type="email" id="primaryEmailAddress" name="primaryEmailAddress" class="form-control">
+                        <label for="addLastName">Last Name</label>
+                        <input type="text" class="form-control" id="addLastName" required>
                     </div>
                     <div class="form-group">
-                        <label for="secondaryEmailAddress">Secondary Email Address</label>
-                        <input type="email" id="secondaryEmailAddress" name="secondaryEmailAddress" class="form-control">
+                        <label for="addPrimaryPhoneNumber">Primary Phone Number</label>
+                        <input type="text" class="form-control" id="addPrimaryPhoneNumber">
                     </div>
                     <div class="form-group">
-                        <label for="primaryPhoneNumber">Primary Phone Number</label>
-                        <input type="tel" id="primaryPhoneNumber" name="primaryPhoneNumber" class="form-control">
+                        <label for="addPrimaryEmailAddress">Primary Email Address</label>
+                        <input type="email" class="form-control" id="addPrimaryEmailAddress">
                     </div>
                     <div class="form-group">
-                        <label for="secondaryPhoneNumber">Secondary Phone Number</label>
-                        <input type="tel" id="secondaryPhoneNumber" name="secondaryPhoneNumber" class="form-control">
+                        <label for="addAddress">Address</label>
+                        <input type="text" class="form-control" id="addAddress">
                     </div>
-                    <div class="form-group">
-                        <label for="address">Address</label>
-                        <input type="text" id="address" name="address" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="company">Company</label>
-                        <input type="text" id="company" name="company" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="jobTitle">Job Title</label>
-                        <input type="text" id="jobTitle" name="jobTitle" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="notes">Notes</label>
-                        <textarea id="notes" name="notes" class="form-control"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="photoUrl">Photo URL</label>
-                        <input type="text" id="photoUrl" name="photoUrl" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="website">Website</label>
-                        <input type="text" id="website" name="website" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="birthday">Birthday</label>
-                        <input type="date" id="birthday" name="birthday" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="nickname">Nickname</label>
-                        <input type="text" id="nickname" name="nickname" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="relationship">Relationship</label>
-                        <input type="text" id="relationship" name="relationship" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="label">Label</label>
-                        <input type="text" id="label" name="label" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="department">Department</label>
-                        <input type="text" id="department" name="department" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="officeLocation">Office Location</label>
-                        <input type="text" id="officeLocation" name="officeLocation" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="language">Language</label>
-                        <input type="text" id="language" name="language" class="form-control">
-                    </div>
-                    <div class="form-group text-center">
-                        <button type="submit" class="btn btn-primary">Add Contact</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="reset" class="btn btn-warning">Clear</button>
-                    </div>
-                </form>
-            </div>
+                    <!-- Add more fields as needed -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add Contact</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
-   /* $(document).ready(function() {
-        // Handle View button click
-        $('#contactModal').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget);
-            var contactId = button.data('contact-id');
-            $.get('/api/contacts/getContactsById/' + contactId, function(contact) {
-                var detailsHtml = '<div class="form-group"><label>First Name</label><p>' + contact.firstName + '</p></div>';
-                detailsHtml += '<div class="form-group"><label>Middle Name</label><p>' + contact.middleName + '</p></div>';
-                detailsHtml += '<div class="form-group"><label>Last Name</label><p>' + contact.lastName + '</p></div>';
-                detailsHtml += '<div class="form-group"><label>Primary Email Address</label><p>' + contact.primaryEmailAddress + '</p></div>';
-                detailsHtml += '<div class="form-group"><label>Secondary Email Address</label><p>' + contact.secondaryEmailAddress + '</p></div>';
-                detailsHtml += '<div class="form-group"><label>Primary Phone Number</label><p>' + contact.primaryPhoneNumber + '</p></div>';
-                detailsHtml += '<div class="form-group"><label>Secondary Phone Number</label><p>' + contact.secondaryPhoneNumber + '</p></div>';
-                detailsHtml += '<div class="form-group"><label>Address</label><p>' + contact.address + '</p></div>';
-                detailsHtml += '<div class="form-group"><label>Company</label><p>' + contact.company + '</p></div>';
-                detailsHtml += '<div class="form-group"><label>Job Title</label><p>' + contact.jobTitle + '</p></div>';
-                detailsHtml += '<div class="form-group"><label>Notes</label><p>' + contact.notes + '</p></div>';
-                detailsHtml += '<div class="form-group"><label>Photo URL</label><p><img src="' + contact.photoUrl + '" alt="Photo" class="img-fluid"></p></div>';
-                detailsHtml += '<div class="form-group"><label>Website</label><p>' + contact.website + '</p></div>';
-                detailsHtml += '<div class="form-group"><label>Birthday</label><p>' + contact.birthday + '</p></div>';
-                detailsHtml += '<div class="form-group"><label>Nickname</label><p>' + contact.nickname + '</p></div>';
-                detailsHtml += '<div class="form-group"><label>Relationship</label><p>' + contact.relationship + '</p></div>';
-                detailsHtml += '<div class="form-group"><label>Label</label><p>' + contact.label + '</p></div>';
-                detailsHtml += '<div class="form-group"><label>Department</label><p>' + contact.department + '</p></div>';
-                detailsHtml += '<div class="form-group"><label>Office Location</label><p>' + contact.officeLocation + '</p></div>';
-                detailsHtml += '<div class="form-group"><label>Language</label><p>' + contact.language + '</p></div>';
-                $('#contactDetails').html(detailsHtml);
-            });
-        });*/
-   /*$(document).ready(function() {
-       // Handle View button click
-       $('#contactModal').on('show.bs.modal', function(event) {
-           var button = $(event.relatedTarget);
-           var contactId = button.data('contact-id');
+    // Dummy data for demonstration
+    const contacts = [
+        {
+            id: 1,
+            name: 'John Doe',
+            phone: '123-456-7890',
+            email: 'john@example.com',
+            address: '123 Elm Street'
+        },
+        // Add more dummy contacts here
+    ];
 
-           // Fetch contact details using Ajax
-           $.get('/api/contacts/getContactsById/' + contactId, function(contact) {
-               var detailsHtml = `
-                    <div class="form-group">
-                        <label>First Name:</label>
-                        <p>${contact.firstName}</p>
+    function renderContacts() {
+        const contactList = document.getElementById('contactList');
+        contactList.innerHTML = '';
+        contacts.forEach(contact => {
+            const card = `
+                <div class="col-md-4">
+                    <div class="contact-card">
+                        <img src="https://via.placeholder.com/100" alt="${contact.name}">
+                        <h4>${contact.name}</h4>
+                        <p>Phone: ${contact.phone}</p>
+                        <p>Email: ${contact.email}</p>
+                        <p>Address: ${contact.address}</p>
+                        <button class="btn btn-primary btn-view" onclick="viewContact(${contact.id})">View</button>
                     </div>
-                    <div class="form-group">
-                        <label>Middle Name:</label>
-                        <p>${contact.middleName}</p>
-                    </div>
-                    <div class="form-group">
-                        <label>Last Name:</label>
-                        <p>${contact.lastName}</p>
-                    </div>
-                    <div class="form-group">
-                        <label>Primary Email Address:</label>
-                        <p>${contact.primaryEmailAddress}</p>
-                    </div>
-                    <div class="form-group">
-                        <label>Secondary Email Address:</label>
-                        <p>${contact.secondaryEmailAddress}</p>
-                    </div>
-                    <div class="form-group">
-                        <label>Primary Phone Number:</label>
-                        <p>${contact.primaryPhoneNumber}</p>
-                    </div>
-                    <div class="form-group">
-                        <label>Secondary Phone Number:</label>
-                        <p>${contact.secondaryPhoneNumber}</p>
-                    </div>
-                    <div class="form-group">
-                        <label>Company:</label>
-                        <p>${contact.company}</p>
-                    </div>
-                    <div class="form-group">
-                        <label>Job Title:</label>
-                        <p>${contact.jobTitle}</p>
-                    </div>
-                    <div class="form-group">
-                        <label>Notes:</label>
-                        <p>${contact.notes}</p>
-                    </div>
-                    <div class="form-group">
-                        <label>Address:</label>
-                        <p>${contact.address}</p>
-                    </div>
-                    <div class="form-group">
-                        <label>Photo:</label>
-                        <p><img src="${contact.photoUrl}" alt="Photo" class="img-fluid"></p>
-                    </div>
-                `;
-
-               $('#contactDetails').html(detailsHtml);
-           });
-       });
-   });*/
-   $(document).ready(function() {
-       // Handle View button click
-       $('#contactModal').on('show.bs.modal', function(event) {
-           var button = $(event.relatedTarget);
-           var contactId = button.data('contact-id');
-
-           // Fetch contact details using the API
-           $.get('/api/contacts/getContactsById/' + contactId, function(contact) {
-               var detailsHtml = `
-                <div class="form-group">
-                    <label>First Name</label>
-                    <p>${contact.firstName}</p>
-                </div>
-                <div class="form-group">
-                    <label>Middle Name</label>
-                    <p>${contact.middleName ? contact.middleName : 'N/A'}</p>
-                </div>
-                <div class="form-group">
-                    <label>Last Name</label>
-                    <p>${contact.lastName}</p>
-                </div>
-                <div class="form-group">
-                    <label>Primary Email Address</label>
-                    <p>${contact.primaryEmailAddress}</p>
-                </div>
-                <div class="form-group">
-                    <label>Secondary Email Address</label>
-                    <p>${contact.secondaryEmailAddress ? contact.secondaryEmailAddress : 'N/A'}</p>
-                </div>
-                <div class="form-group">
-                    <label>Primary Phone Number</label>
-                    <p>${contact.primaryPhoneNumber}</p>
-                </div>
-                <div class="form-group">
-                    <label>Secondary Phone Number</label>
-                    <p>${contact.secondaryPhoneNumber ? contact.secondaryPhoneNumber : 'N/A'}</p>
-                </div>
-                <div class="form-group">
-                    <label>Address</label>
-                    <p>${contact.address}</p>
-                </div>
-                <div class="form-group">
-                    <label>Company</label>
-                    <p>${contact.company}</p>
-                </div>
-                <div class="form-group">
-                    <label>Job Title</label>
-                    <p>${contact.jobTitle}</p>
-                </div>
-                <div class="form-group">
-                    <label>Birthday</label>
-                    <p>${contact.birthday}</p>
-                </div>
-                <div class="form-group">
-                    <label>Notes</label>
-                    <p>${contact.notes}</p>
-                </div>
-                <div class="form-group">
-                    <label>Website</label>
-                    <p><a href="${contact.website}" target="_blank">${contact.website}</a></p>
                 </div>
             `;
-
-               // Update modal with contact details
-               $('#contactDetails').html(detailsHtml);
-           });
-       });
-   });
-
-        // Handle Update button click
-        $('#updateButton').click(function() {
-            // Open update form in modal
-            var contactId = $('#contactModal').find('button[data-contact-id]').data('contact-id');
-            $.get('/api/contacts/getContactsById/' + contactId, function(contact) {
-                // Populate form fields in update modal
-                $('#addContactModal #firstName').val(contact.firstName);
-                $('#addContactModal #middleName').val(contact.middleName);
-                $('#addContactModal #lastName').val(contact.lastName);
-                $('#addContactModal #primaryEmailAddress').val(contact.primaryEmailAddress);
-                $('#addContactModal #secondaryEmailAddress').val(contact.secondaryEmailAddress);
-                $('#addContactModal #primaryPhoneNumber').val(contact.primaryPhoneNumber);
-                $('#addContactModal #secondaryPhoneNumber').val(contact.secondaryPhoneNumber);
-                $('#addContactModal #address').val(contact.address);
-                $('#addContactModal #company').val(contact.company);
-                $('#addContactModal #jobTitle').val(contact.jobTitle);
-                $('#addContactModal #notes').val(contact.notes);
-                $('#addContactModal #photoUrl').val(contact.photoUrl);
-                $('#addContactModal #website').val(contact.website);
-                $('#addContactModal #birthday').val(contact.birthday);
-                $('#addContactModal #nickname').val(contact.nickname);
-                $('#addContactModal #relationship').val(contact.relationship);
-                $('#addContactModal #label').val(contact.label);
-                $('#addContactModal #department').val(contact.department);
-                $('#addContactModal #officeLocation').val(contact.officeLocation);
-                $('#addContactModal #language').val(contact.language);
-                $('#addContactModal').modal('show');
-            });
+            contactList.innerHTML += card;
         });
+    }
 
-        // Handle Delete button click
-        $('#deleteButton').click(function() {
-            $('#deleteConfirmationModal').modal('show');
-        });
+    function viewContact(id) {
+        const contact = contacts.find(c => c.id === id);
+        if (contact) {
+            document.getElementById('viewContactModalLabel').innerText = `View Contact: ${contact.name}`;
+            document.getElementById('viewContactDetails').innerHTML = `
+                <p><strong>Name:</strong> ${contact.name}</p>
+                <p><strong>Phone:</strong> ${contact.phone}</p>
+                <p><strong>Email:</strong> ${contact.email}</p>
+                <p><strong>Address:</strong> ${contact.address}</p>
+            `;
+            document.getElementById('editContactButton').onclick = () => editContact(id);
+            document.getElementById('deleteContactButton').onclick = () => deleteContact(id);
+            $('#viewContactModal').modal('show');
+        }
+    }
 
-        // Confirm delete
-        $('#confirmDeleteButton').click(function() {
-            var contactId = $('#contactModal').find('button[data-contact-id]').data('contact-id');
-            $.ajax({
-                url: '/api/contacts/deleteContact/' + contactId,
-                type: 'DELETE',
-                success: function(result) {
-                    $('#contactModal').modal('hide');
-                    location.reload();
-                }
-            });
-        });
+    function editContact(id) {
+        const contact = contacts.find(c => c.id === id);
+        if (contact) {
+            document.getElementById('editContactId').value = contact.id;
+            document.getElementById('editFirstName').value = contact.name.split(' ')[0];
+            document.getElementById('editMiddleName').value = contact.name.split(' ')[1] || '';
+            document.getElementById('editLastName').value = contact.name.split(' ')[2] || '';
+            document.getElementById('editPrimaryPhoneNumber').value = contact.phone;
+            document.getElementById('editPrimaryEmailAddress').value = contact.email;
+            document.getElementById('editAddress').value = contact.address;
+            $('#editContactModal').modal('show');
+        }
+    }
+
+    function deleteContact(id) {
+        if (confirm('Are you sure you want to delete this contact?')) {
+            const index = contacts.findIndex(c => c.id === id);
+            if (index > -1) {
+                contacts.splice(index, 1);
+                renderContacts();
+                $('#viewContactModal').modal('hide');
+            }
+        }
+    }
+
+    document.getElementById('editContactForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const id = parseInt(document.getElementById('editContactId').value, 10);
+        const contact = contacts.find(c => c.id === id);
+        if (contact) {
+            contact.name = `${document.getElementById('editFirstName').value} ${document.getElementById('editMiddleName').value} ${document.getElementById('editLastName').value}`;
+            contact.phone = document.getElementById('editPrimaryPhoneNumber').value;
+            contact.email = document.getElementById('editPrimaryEmailAddress').value;
+            contact.address = document.getElementById('editAddress').value;
+            renderContacts();
+            $('#editContactModal').modal('hide');
+        }
     });
+
+    document.getElementById('addContactForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const newContact = {
+            id: contacts.length ? contacts[contacts.length - 1].id + 1 : 1,
+            name: `${document.getElementById('addFirstName').value} ${document.getElementById('addMiddleName').value} ${document.getElementById('addLastName').value}`,
+            phone: document.getElementById('addPrimaryPhoneNumber').value,
+            email: document.getElementById('addPrimaryEmailAddress').value,
+            address: document.getElementById('addAddress').value
+        };
+        contacts.push(newContact);
+        renderContacts();
+        $('#addContactModal').modal('hide');
+    });
+
+    function searchContacts() {
+        const searchBox = document.getElementById('searchBox').value.toLowerCase();
+        const searchSelect = document.getElementById('searchSelect').value;
+        const filteredContacts = contacts.filter(contact =>
+            contact[searchSelect].toLowerCase().includes(searchBox)
+        );
+        const contactList = document.getElementById('contactList');
+        contactList.innerHTML = '';
+        filteredContacts.forEach(contact => {
+            const card = `
+                <div class="col-md-4">
+                    <div class="contact-card">
+                        <img src="https://via.placeholder.com/100" alt="${contact.name}">
+                        <h4>${contact.name}</h4>
+                        <p>Phone: ${contact.phone}</p>
+                        <p>Email: ${contact.email}</p>
+                        <p>Address: ${contact.address}</p>
+                        <button class="btn btn-primary btn-view" onclick="viewContact(${contact.id})">View</button>
+                    </div>
+                </div>
+            `;
+            contactList.innerHTML += card;
+        });
+    }
+
+    // Initial render
+    renderContacts();
 </script>
 
 </body>
