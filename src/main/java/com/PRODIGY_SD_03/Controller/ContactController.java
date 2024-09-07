@@ -16,14 +16,7 @@ public class ContactController {
 
     @Autowired
     ContactService contactService;
-/*
-    //@GetMapping("/contacts")
-    @GetMapping
-    public String viewContacts(Model model) {
-        List<Contact> contact = contactService.getAllContact();
-        model.addAttribute("contact", contact);
-        return "contact.html"; // returns the contacts.html template
-    }*/
+
     @GetMapping("/getAllContacts")
     public ResponseEntity<List<Contact>> getAllContacts() {
         List<Contact> contacts = contactService.getAllContact();
