@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/contacts")
@@ -29,12 +30,22 @@ public class ContactController {
         return new ResponseEntity<>(newContact, HttpStatus.OK);
     }
 
+    /*@GetMapping("/getContactsById/{id}")
+    public ResponseEntity<Contact> getContactsById(@PathVariable("id") Long id) {
+        return contactService.getContactById(id)
+                .map(contact -> new ResponseEntity<>(contact, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }*/
     @GetMapping("/getContactsById/{id}")
     public ResponseEntity<Contact> getContactsById(@PathVariable("id") Long id) {
         return contactService.getContactById(id)
                 .map(contact -> new ResponseEntity<>(contact, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+    /*@GetMapping("/getContactsById/{id}")
+    public Optional<Contact> getContactById(Long id) {
+        return contactService.getContactById(id);
+    }*/
 
     @PutMapping("/updateContact/{id}")
     public ResponseEntity<Contact> updateContact(
