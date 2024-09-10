@@ -342,6 +342,26 @@
         </div>
     </div>
 </div>
+<!--Delete Confirmation Modal -->
+<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirm Deletion</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this contact? This action cannot be undone.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelDeleteButton">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteButton">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <script>
@@ -562,7 +582,7 @@
         };
 
         $.ajax({
-            url: '/api/contacts/updateContact/', // Replace with your actual endpoint
+            url: '/api/contacts/updateContact/',
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(newContactData),
@@ -579,7 +599,7 @@
     });
 
 
-//     edit code
+    // new edit code
     // edit.js
 
     $(document).ready(function() {
@@ -589,7 +609,7 @@
 
             // Fetch contact details
             $.ajax({
-                url: `/api/contacts/getContactsById/${contactId}`, // Replace with actual endpoint
+                url: `/api/contacts/getContactsById/${contactId}`,
                 method: 'GET',
                 success: function(contact) {
                     // Populate form fields with contact data
@@ -648,7 +668,7 @@
 
             // Send updated contact data to the backend
             $.ajax({
-                url: `/api/contacts/updateContact/${contactId}`, // Replace with actual endpoint
+                url: `/api/contacts/updateContact/${contactId}`,
                 method: 'PUT',
                 contentType: 'application/json',
                 data: JSON.stringify(contactData),
@@ -658,6 +678,32 @@
                     fetchContacts(); // Call the function to refresh the contact list
                 }
             });
+        });
+    });
+
+//     delete
+
+    // Delete contact
+    $('#viewContactModal').on('click', '#deleteContactButton', function() {
+        const contactId = $('#saveEditContactButton').data('id');
+
+        // Show confirmation popup
+        $('#deleteConfirmationModal').modal('show');
+
+        $('#confirmDeleteButton').on('click', function() {
+            $.ajax({
+                url: `/api/contacts/deleteContact/${contactId}`,
+                method: 'DELETE',
+                success: function() {
+                    $('#deleteConfirmationModal').modal('hide');
+                    $('#viewContactModal').modal('hide');
+                    fetchContacts();
+                }
+            });
+        });
+
+        $('#cancelDeleteButton').on('click', function() {
+            $('#deleteConfirmationModal').modal('hide');
         });
     });
 
