@@ -127,7 +127,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="editContactButton">Edit</button>
+                <!--<button type="button" class="btn btn-primary" id="editContactButton">Edit</button>-->
+                <button class="btn btn-primary btn-view" data-id="${contact.id}" data-toggle="modal" data-target="#editContactModal">Edit</button>
                 <button type="button" class="btn btn-danger" id="deleteContactButton">Delete</button>
             </div>
         </div>
@@ -362,6 +363,7 @@
                                 <p><strong>Email:</strong> ${contact.primaryEmailAddress || 'N/A'}</p>
                                 <p><strong>Address:</strong> ${contact.address || 'N/A'}</p>
                                 <button class="btn btn-primary btn-view" data-id="${contact.id}" data-toggle="modal" data-target="#viewContactModal">View</button>
+<!--                                <button class="btn btn-secondary btn-view" data-id="${contact.id}" data-toggle="modal" data-target="#editContactModal">Edit</button>-->
                             </div>
                         </div>
                     `;
@@ -560,7 +562,7 @@
         };
 
         $.ajax({
-            url: 'api/contacts/addContact', // Replace with your actual endpoint
+            url: '/api/contacts/updateContact/', // Replace with your actual endpoint
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(newContactData),
@@ -575,6 +577,90 @@
     $('#clearAddContactButton').on('click', function() {
         $('#addContactForm')[0].reset();
     });
+
+
+//     edit code
+    // edit.js
+
+    $(document).ready(function() {
+        // Load contact data into the edit form when the edit button is clicked
+        $('#contactList').on('click', '.btn-view', function() {
+            const contactId = $(this).data('id');
+
+            // Fetch contact details
+            $.ajax({
+                url: `/api/contacts/getContactsById/${contactId}`, // Replace with actual endpoint
+                method: 'GET',
+                success: function(contact) {
+                    // Populate form fields with contact data
+                    $('#editFirstName').val(contact.firstName || '');
+                    $('#editMiddleName').val(contact.middleName || '');
+                    $('#editLastName').val(contact.lastName || '');
+                    $('#editPrimaryPhoneNumber').val(contact.primaryPhoneNumber || '');
+                    $('#editSecondaryPhoneNumber').val(contact.secondaryPhoneNumber || '');
+                    $('#editPrimaryEmailAddress').val(contact.primaryEmailAddress || '');
+                    $('#editSecondaryEmailAddress').val(contact.secondaryEmailAddress || '');
+                    $('#editAddress').val(contact.address || '');
+                    $('#editCompany').val(contact.company || '');
+                    $('#editJobTitle').val(contact.jobTitle || '');
+                    $('#editNotes').val(contact.notes || '');
+                    $('#editPhotoUrl').val(contact.photoUrl || '');
+                    $('#editWebsite').val(contact.website || '');
+                    $('#editBirthday').val(contact.birthday || '');
+                    $('#editNickname').val(contact.nickname || '');
+                    $('#editRelationship').val(contact.relationship || '');
+                    $('#editLabel').val(contact.label || '');
+                    $('#editDepartment').val(contact.department || '');
+                    $('#editOfficeLocation').val(contact.officeLocation || '');
+                    $('#editLanguage').val(contact.language || '');
+
+                    // Store the contact ID for later use
+                    $('#saveEditContactButton').data('id', contact.id);
+                }
+            });
+        });
+
+        // Save updated contact data
+        $('#saveEditContactButton').on('click', function() {
+            const contactId = $(this).data('id');
+            const contactData = {
+                firstName: $('#editFirstName').val(),
+                middleName: $('#editMiddleName').val(),
+                lastName: $('#editLastName').val(),
+                primaryPhoneNumber: $('#editPrimaryPhoneNumber').val(),
+                secondaryPhoneNumber: $('#editSecondaryPhoneNumber').val(),
+                primaryEmailAddress: $('#editPrimaryEmailAddress').val(),
+                secondaryEmailAddress: $('#editSecondaryEmailAddress').val(),
+                address: $('#editAddress').val(),
+                company: $('#editCompany').val(),
+                jobTitle: $('#editJobTitle').val(),
+                notes: $('#editNotes').val(),
+                photoUrl: $('#editPhotoUrl').val(),
+                website: $('#editWebsite').val(),
+                birthday: $('#editBirthday').val(),
+                nickname: $('#editNickname').val(),
+                relationship: $('#editRelationship').val(),
+                label: $('#editLabel').val(),
+                department: $('#editDepartment').val(),
+                officeLocation: $('#editOfficeLocation').val(),
+                language: $('#editLanguage').val()
+            };
+
+            // Send updated contact data to the backend
+            $.ajax({
+                url: `/api/contacts/updateContact/${contactId}`, // Replace with actual endpoint
+                method: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(contactData),
+                success: function() {
+                    // Hide the edit modal and refresh contact list
+                    $('#editContactModal').modal('hide');
+                    fetchContacts(); // Call the function to refresh the contact list
+                }
+            });
+        });
+    });
+
 </script>
 
 </body>
