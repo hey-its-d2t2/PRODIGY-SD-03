@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Management System</title>
+    <link rel="stylesheet" href="../static/css/styles.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -79,7 +80,7 @@
             font-weight: bold;
         }
     </style>
-        </head>
+</head>
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-custom">
@@ -95,9 +96,9 @@
         </ul>
         <form class="form-inline my-2 my-lg-0">
             <select class="form-control mr-sm-2" id="searchSelect">
-                <option value="name">First Name</option>
-                <option value="email">Primary Email</option>
-                <option value="phone">Primary Phone</option>
+                <option value="name">Name</option>
+                <option value="email">Email</option>
+                <option value="phone">Phone</option>
             </select>
             <input class="form-control mr-sm-2" type="search" id="searchBox" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-light my-2 my-sm-0" type="button" onclick="searchContacts()">Search</button>
@@ -149,56 +150,24 @@
                     <input type="hidden" id="editContactId">
                     <!-- Form fields for editing -->
                     <div class="form-group">
-                        <label for="editFirstName">First Name</label>
-                        <input type="text" class="form-control" id="editFirstName" required>
+                        <label for="editName">Name</label>
+                        <input type="text" class="form-control" id="editName" required>
                     </div>
                     <div class="form-group">
-                        <label for="editMiddleName">Middle Name</label>
-                        <input type="text" class="form-control" id="editMiddleName" required>
+                        <label for="editNumber">Phone</label>
+                        <input type="text" class="form-control" id="editNumber">
                     </div>
                     <div class="form-group">
-                        <label for="editLastName">Last Name</label>
-                        <input type="text" class="form-control" id="editLastName" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="editPrimaryPhoneNumber">Primary Phone Number</label>
-                        <input type="text" class="form-control" id="editPrimaryPhoneNumber">
-                    </div>
-                    <div class="form-group">
-                        <label for="editSecondaryPhoneNumber">Secondary Phone Number</label>
-                        <input type="text" class="form-control" id="editSecondaryPhoneNumber">
-                    </div>
-                    <div class="form-group">
-                        <label for="editPrimaryEmailAddress">Primary Email Address</label>
-                        <input type="email" class="form-control" id="editPrimaryEmailAddress">
-                    </div>
-                    <div class="form-group">
-                        <label for="editSecondaryEmailAddress">Secondary Email Address</label>
-                        <input type="email" class="form-control" id="editSecondaryEmailAddress">
+                        <label for="editEmail">Email</label>
+                        <input type="email" class="form-control" id="editEmail">
                     </div>
                     <div class="form-group">
                         <label for="editAddress">Address</label>
                         <input type="text" class="form-control" id="editAddress">
                     </div>
                     <div class="form-group">
-                        <label for="editCompany">Company</label>
-                        <input type="text" class="form-control" id="editCompany">
-                    </div>
-                    <div class="form-group">
-                        <label for="editJobTitle">Job Title</label>
-                        <input type="text" class="form-control" id="editJobTitle">
-                    </div>
-                    <div class="form-group">
-                        <label for="editNotes">Notes</label>
-                        <textarea class="form-control" id="editNotes"></textarea>
-                    </div>
-                    <div class="form-group">
                         <label for="editPhotoUrl">Photo URL</label>
                         <input type="text" class="form-control" id="editPhotoUrl">
-                    </div>
-                    <div class="form-group">
-                        <label for="editWebsite">Website</label>
-                        <input type="text" class="form-control" id="editWebsite">
                     </div>
                     <div class="form-group">
                         <label for="editBirthday">Birthday</label>
@@ -211,22 +180,6 @@
                     <div class="form-group">
                         <label for="editRelationship">Relationship</label>
                         <input type="text" class="form-control" id="editRelationship">
-                    </div>
-                    <div class="form-group">
-                        <label for="editLabel">Label</label>
-                        <input type="text" class="form-control" id="editLabel">
-                    </div>
-                    <div class="form-group">
-                        <label for="editDepartment">Department</label>
-                        <input type="text" class="form-control" id="editDepartment">
-                    </div>
-                    <div class="form-group">
-                        <label for="editOfficeLocation">Office Location</label>
-                        <input type="text" class="form-control" id="editOfficeLocation">
-                    </div>
-                    <div class="form-group">
-                        <label for="editLanguage">Language</label>
-                        <input type="text" class="form-control" id="editLanguage">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -252,56 +205,25 @@
                 <div class="modal-body">
                     <!-- Form fields for adding -->
                     <div class="form-group">
-                        <label for="addFirstName">First Name</label>
-                        <input type="text" class="form-control" id="addFirstName" required>
+                        <label for="addName">Name</label>
+                        <input type="text" class="form-control" id="addName" required>
                     </div>
                     <div class="form-group">
-                        <label for="addMiddleName">Middle Name</label>
-                        <input type="text" class="form-control" id="addMiddleName" required>
+                        <label for="addNumber">Phone</label>
+                        <input type="text" class="form-control" id="addNumber">
                     </div>
+
                     <div class="form-group">
-                        <label for="addLastName">Last Name</label>
-                        <input type="text" class="form-control" id="addLastName" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="addPrimaryPhoneNumber">Primary Phone Number</label>
-                        <input type="text" class="form-control" id="addPrimaryPhoneNumber">
-                    </div>
-                    <div class="form-group">
-                        <label for="addSecondaryPhoneNumber">Secondary Phone Number</label>
-                        <input type="text" class="form-control" id="addSecondaryPhoneNumber">
-                    </div>
-                    <div class="form-group">
-                        <label for="addPrimaryEmailAddress">Primary Email Address</label>
-                        <input type="email" class="form-control" id="addPrimaryEmailAddress">
-                    </div>
-                    <div class="form-group">
-                        <label for="addSecondaryEmailAddress">Secondary Email Address</label>
-                        <input type="email" class="form-control" id="addSecondaryEmailAddress">
+                        <label for="addEmail">Email</label>
+                        <input type="email" class="form-control" id="addEmail">
                     </div>
                     <div class="form-group">
                         <label for="addAddress">Address</label>
                         <input type="text" class="form-control" id="addAddress">
                     </div>
                     <div class="form-group">
-                        <label for="addCompany">Company</label>
-                        <input type="text" class="form-control" id="addCompany">
-                    </div>
-                    <div class="form-group">
-                        <label for="addJobTitle">Job Title</label>
-                        <input type="text" class="form-control" id="addJobTitle">
-                    </div>
-                    <div class="form-group">
-                        <label for="addNotes">Notes</label>
-                        <textarea class="form-control" id="addNotes"></textarea>
-                    </div>
-                    <div class="form-group">
                         <label for="addPhotoUrl">Photo URL</label>
                         <input type="text" class="form-control" id="addPhotoUrl">
-                    </div>
-                    <div class="form-group">
-                        <label for="addWebsite">Website</label>
-                        <input type="text" class="form-control" id="addWebsite">
                     </div>
                     <div class="form-group">
                         <label for="addBirthday">Birthday</label>
@@ -314,22 +236,6 @@
                     <div class="form-group">
                         <label for="addRelationship">Relationship</label>
                         <input type="text" class="form-control" id="addRelationship">
-                    </div>
-                    <div class="form-group">
-                        <label for="addLabel">Label</label>
-                        <input type="text" class="form-control" id="addLabel">
-                    </div>
-                    <div class="form-group">
-                        <label for="addDepartment">Department</label>
-                        <input type="text" class="form-control" id="addDepartment">
-                    </div>
-                    <div class="form-group">
-                        <label for="addOfficeLocation">Office Location</label>
-                        <input type="text" class="form-control" id="addOfficeLocation">
-                    </div>
-                    <div class="form-group">
-                        <label for="addLanguage">Language</label>
-                        <input type="text" class="form-control" id="addLanguage">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -362,12 +268,20 @@
     </div>
 </div>
 
+<!-- Success Modal -->
+<div id="successModal" class="modal">
+    <div class="modal-content">
+        <h3>Contact Added Successfully!</h3>
+        <p>Your new contact has been saved.</p>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    </div>
+</div>
 
 <script>
     // Fetch and display contacts
     function fetchContacts() {
         $.ajax({
-            url: '/api/contacts/getAllContacts', // Replace with your actual endpoint
+            url: '/api/contacts/getAllContacts',
             method: 'GET',
             success: function(data) {
                 const contactList = $('#contactList');
@@ -377,10 +291,9 @@
                         <div class="col-md-4">
                             <div class="contact-card">
                                 <img src="${contact.photoUrl || 'https://via.placeholder.com/100'}" alt="${contact.name}">
-                                <h4>${contact.firstName} ${contact.lastName}</h4>
-                                <p><strong>Phone:</strong> ${contact.primaryPhoneNumber || 'N/A'}</p>
-                                <p><strong>Email:</strong> ${contact.primaryEmailAddress || 'N/A'}</p>
-                                <p><strong>Address:</strong> ${contact.address || 'N/A'}</p>
+                                <h4>${contact.name}</h4>
+                                <p><strong>Phone:</strong> ${contact.number || 'N/A'}</p>
+                                <p><strong>Email:</strong> ${contact.email || 'N/A'}</p>
                                 <button class="btn btn-primary btn-view" data-id="${contact.id}" data-toggle="modal" data-target="#viewContactModal">View</button>
                             </div>
                         </div>
@@ -399,7 +312,7 @@
         const searchCriteria = $('#searchSelect').val();
 
         $.ajax({
-            url: `/api/contacts/search?${searchCriteria}=${searchTerm}`, // Update with actual endpoint
+            url: `/api/contacts/search?${searchCriteria}=${searchTerm}`,
             method: 'GET',
             success: function(data) {
                 const contactList = $('#contactList');
@@ -409,9 +322,9 @@
                         <div class="col-md-4">
                             <div class="contact-card">
                                 <img src="${contact.photoUrl || 'https://via.placeholder.com/100'}" alt="${contact.name}">
-                                <h4>${contact.firstName} ${contact.lastName}</h4>
-                                <p><strong>Phone:</strong> ${contact.primaryPhoneNumber || 'N/A'}</p>
-                                <p><strong>Email:</strong> ${contact.primaryEmailAddress || 'N/A'}</p>
+                                <h4>${contact.name}</h4>
+                                <p><strong>Phone:</strong> ${contact.number || 'N/A'}</p>
+                                <p><strong>Email:</strong> ${contact.email || 'N/A'}</p>
                                 <button class="btn btn-primary btn-view" data-id="${contact.id}" data-toggle="modal" data-target="#viewContactModal">View</button>
                             </div>
                         </div>
@@ -431,54 +344,22 @@
             method: 'GET',
             success: function(contact) {
                 $('#viewContactDetails').html(`
-                <img src="${contact.photoUrl || 'https://via.placeholder.com/100'}" alt="${contact.firstName}" class="img-fluid mb-3">
+                <img src="${contact.photoUrl || 'https://via.placeholder.com/100'}" alt="${contact.name}" class="img-fluid mb-3">
                 <div class="form-group">
-                    <label for="viewFirstName">First Name</label>
-                    <input type="text" class="form-control" id="viewFirstName" value="${contact.firstName}" readonly>
+                    <label for="viewName">Name</label>
+                    <input type="text" class="form-control" id="viewName" value="${contact.name}" readonly>
                 </div>
                 <div class="form-group">
-                    <label for="viewMiddleName">Middle Name</label>
-                    <input type="text" class="form-control" id="viewMiddleName" value="${contact.middleName || 'N/A'}" readonly>
+                    <label for="viewNumber">Number</label>
+                    <input type="text" class="form-control" id="viewNumber" value="${contact.number || 'N/A'}" readonly>
                 </div>
                 <div class="form-group">
-                    <label for="viewLastName">Last Name</label>
-                    <input type="text" class="form-control" id="viewLastName" value="${contact.lastName || 'N/A'}" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="viewPrimaryPhoneNumber">Primary Phone Number</label>
-                    <input type="text" class="form-control" id="viewPrimaryPhoneNumber" value="${contact.primaryPhoneNumber || 'N/A'}" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="viewSecondaryPhoneNumber">Secondary Phone Number</label>
-                    <input type="text" class="form-control" id="viewSecondaryPhoneNumber" value="${contact.secondaryPhoneNumber || 'N/A'}" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="viewPrimaryEmailAddress">Primary Email Address</label>
-                    <input type="text" class="form-control" id="viewPrimaryEmailAddress" value="${contact.primaryEmailAddress || 'N/A'}" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="viewSecondaryEmailAddress">Secondary Email Address</label>
-                    <input type="text" class="form-control" id="viewSecondaryEmailAddress" value="${contact.secondaryEmailAddress || 'N/A'}" readonly>
+                    <label for="viewEmail">Email</label>
+                    <input type="text" class="form-control" id="viewEmail" value="${contact.email || 'N/A'}" readonly>
                 </div>
                 <div class="form-group">
                     <label for="viewAddress">Address</label>
                     <input type="text" class="form-control" id="viewAddress" value="${contact.address || 'N/A'}" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="viewCompany">Company</label>
-                    <input type="text" class="form-control" id="viewCompany" value="${contact.company || 'N/A'}" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="viewJobTitle">Job Title</label>
-                    <input type="text" class="form-control" id="viewJobTitle" value="${contact.jobTitle || 'N/A'}" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="viewNotes">Notes</label>
-                    <input type="text" class="form-control" id="viewNotes" value="${contact.notes || 'N/A'}" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="viewWebsite">Website</label>
-                    <input type="text" class="form-control" id="viewWebsite" value="${contact.website || 'N/A'}" readonly>
                 </div>
                 <div class="form-group">
                     <label for="viewBirthday">Birthday</label>
@@ -492,22 +373,7 @@
                     <label for="viewRelationship">Relationship</label>
                     <input type="text" class="form-control" id="viewRelationship" value="${contact.relationship || 'N/A'}" readonly>
                 </div>
-                <div class="form-group">
-                    <label for="viewLabel">Label</label>
-                    <input type="text" class="form-control" id="viewLabel" value="${contact.label || 'N/A'}" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="viewDepartment">Department</label>
-                    <input type="text" class="form-control" id="viewDepartment" value="${contact.department || 'N/A'}" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="viewOfficeLocation">Office Location</label>
-                    <input type="text" class="form-control" id="viewOfficeLocation" value="${contact.officeLocation || 'N/A'}" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="viewLanguage">Language</label>
-                    <input type="text" class="form-control" id="viewLanguage" value="${contact.language || 'N/A'}" readonly>
-                </div>
+
             `);
 
                 $('#saveEditContactButton').data('id', contact.id);
@@ -516,71 +382,58 @@
     });
 
 
-    // Edit contact
-    $('#saveEditContactButton').on('click', function() {
-        const contactId = $(this).data('id');
-        const contactData = {
-            firstName: $('#editFirstName').val(),
-            middleName: $('#editMiddleName').val(),
-            lastName: $('#editLastName').val(),
-            primaryPhoneNumber: $('#editPrimaryPhoneNumber').val(),
-            secondaryPhoneNumber: $('#editSecondaryPhoneNumber').val(),
-            primaryEmailAddress: $('#editPrimaryEmailAddress').val(),
-            secondaryEmailAddress: $('#editSecondaryEmailAddress').val(),
-            address: $('#editAddress').val(),
-            company: $('#editCompany').val(),
-            jobTitle: $('#editJobTitle').val(),
-            notes: $('#editNotes').val(),
-            photoUrl: $('#editPhotoUrl').val(),
-            website: $('#editWebsite').val(),
-            birthday: $('#editBirthday').val(),
-            nickname: $('#editNickname').val(),
-            relationship: $('#editRelationship').val(),
-            label: $('#editLabel').val(),
-            department: $('#editDepartment').val(),
-            officeLocation: $('#editOfficeLocation').val(),
-            language: $('#editLanguage').val()
-        };
-
-        $.ajax({
-            url: `/api/contacts/updateContact/${contactId}`, // Replace with your actual endpoint
-            method: 'PUT',
-            contentType: 'application/json',
-            data: JSON.stringify(contactData),
-            success: function() {
-                $('#editContactModal').modal('hide');
-                fetchContacts();
-            }
-        });
-    });
+  /*  // // Edit contact
+    // $('#saveEditContactButton').on('click', function() {
+    //     const contactId = $(this).data('id');
+    //     const contactData = {
+    //         firstName: $('#editFirstName').val(),
+    //         middleName: $('#editMiddleName').val(),
+    //         lastName: $('#editLastName').val(),
+    //         primaryPhoneNumber: $('#editPrimaryPhoneNumber').val(),
+    //         secondaryPhoneNumber: $('#editSecondaryPhoneNumber').val(),
+    //         primaryEmailAddress: $('#editPrimaryEmailAddress').val(),
+    //         secondaryEmailAddress: $('#editSecondaryEmailAddress').val(),
+    //         address: $('#editAddress').val(),
+    //         company: $('#editCompany').val(),
+    //         jobTitle: $('#editJobTitle').val(),
+    //         notes: $('#editNotes').val(),
+    //         photoUrl: $('#editPhotoUrl').val(),
+    //         website: $('#editWebsite').val(),
+    //         birthday: $('#editBirthday').val(),
+    //         nickname: $('#editNickname').val(),
+    //         relationship: $('#editRelationship').val(),
+    //         label: $('#editLabel').val(),
+    //         department: $('#editDepartment').val(),
+    //         officeLocation: $('#editOfficeLocation').val(),
+    //         language: $('#editLanguage').val()
+    //     };
+    //
+    //     $.ajax({
+    //         url: `/api/contacts/updateContact/${contactId}`, // Replace with your actual endpoint
+    //         method: 'PUT',
+    //         contentType: 'application/json',
+    //         data: JSON.stringify(contactData),
+    //         success: function() {
+    //             $('#editContactModal').modal('hide');
+    //             fetchContacts();
+    //         }
+    //     });
+    // });*/
 
     // Add new contact
     $('#saveAddContactButton').on('click', function() {
         const newContactData = {
-            firstName: $('#editFirstName').val(),
-            middleName: $('#editMiddleName').val(),
-            lastName: $('#editLastName').val(),
-            primaryPhoneNumber: $('#addPrimaryPhoneNumber').val(),
-            secondaryPhoneNumber: $('#addSecondaryPhoneNumber').val(),
-            primaryEmailAddress: $('#addPrimaryEmailAddress').val(),
-            secondaryEmailAddress: $('#addSecondaryEmailAddress').val(),
+            name: $('#addName').val(),
+            number: $('#addNumber').val(),
+            email: $('#addEmail').val(),
             address: $('#addAddress').val(),
-            company: $('#addCompany').val(),
-            jobTitle: $('#addJobTitle').val(),
-            notes: $('#addNotes').val(),
             photoUrl: $('#addPhotoUrl').val(),
-            website: $('#addWebsite').val(),
             birthday: $('#addBirthday').val(),
             nickname: $('#addNickname').val(),
             relationship: $('#addRelationship').val(),
-            label: $('#addLabel').val(),
-            department: $('#addDepartment').val(),
-            officeLocation: $('#addOfficeLocation').val(),
-            language: $('#addLanguage').val()
         };
-
         $.ajax({
-            url: '/api/contacts/updateContact/',
+            url: '/api/contacts/addContact',
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(newContactData),
@@ -611,26 +464,14 @@
                 method: 'GET',
                 success: function(contact) {
                     // Populate form fields with contact data
-                    $('#editFirstName').val(contact.firstName || '');
-                    $('#editMiddleName').val(contact.middleName || '');
-                    $('#editLastName').val(contact.lastName || '');
-                    $('#editPrimaryPhoneNumber').val(contact.primaryPhoneNumber || '');
-                    $('#editSecondaryPhoneNumber').val(contact.secondaryPhoneNumber || '');
-                    $('#editPrimaryEmailAddress').val(contact.primaryEmailAddress || '');
-                    $('#editSecondaryEmailAddress').val(contact.secondaryEmailAddress || '');
+                    $('#editName').val(contact.name || '');
+                    $('#editNumber').val(contact.number || '');
+                    $('#editEmail').val(contact.email || '');
                     $('#editAddress').val(contact.address || '');
-                    $('#editCompany').val(contact.company || '');
-                    $('#editJobTitle').val(contact.jobTitle || '');
-                    $('#editNotes').val(contact.notes || '');
                     $('#editPhotoUrl').val(contact.photoUrl || '');
-                    $('#editWebsite').val(contact.website || '');
                     $('#editBirthday').val(contact.birthday || '');
                     $('#editNickname').val(contact.nickname || '');
                     $('#editRelationship').val(contact.relationship || '');
-                    $('#editLabel').val(contact.label || '');
-                    $('#editDepartment').val(contact.department || '');
-                    $('#editOfficeLocation').val(contact.officeLocation || '');
-                    $('#editLanguage').val(contact.language || '');
 
                     // Store the contact ID for later use
                     $('#saveEditContactButton').data('id', contact.id);
@@ -642,26 +483,14 @@
         $('#saveEditContactButton').on('click', function() {
             const contactId = $(this).data('id');
             const contactData = {
-                firstName: $('#editFirstName').val(),
-                middleName: $('#editMiddleName').val(),
-                lastName: $('#editLastName').val(),
-                primaryPhoneNumber: $('#editPrimaryPhoneNumber').val(),
-                secondaryPhoneNumber: $('#editSecondaryPhoneNumber').val(),
-                primaryEmailAddress: $('#editPrimaryEmailAddress').val(),
-                secondaryEmailAddress: $('#editSecondaryEmailAddress').val(),
+                name: $('#editName').val(),
+                number: $('#editNumber').val(),
+                email: $('#editEmail').val(),
                 address: $('#editAddress').val(),
-                company: $('#editCompany').val(),
-                jobTitle: $('#editJobTitle').val(),
-                notes: $('#editNotes').val(),
                 photoUrl: $('#editPhotoUrl').val(),
-                website: $('#editWebsite').val(),
                 birthday: $('#editBirthday').val(),
                 nickname: $('#editNickname').val(),
                 relationship: $('#editRelationship').val(),
-                label: $('#editLabel').val(),
-                department: $('#editDepartment').val(),
-                officeLocation: $('#editOfficeLocation').val(),
-                language: $('#editLanguage').val()
             };
 
             // Send updated contact data to the backend
@@ -703,6 +532,43 @@
         $('#cancelDeleteButton').on('click', function() {
             $('#deleteConfirmationModal').modal('hide');
         });
+    });
+
+
+    // add cont
+
+    // Function to add a new contact
+    document.getElementById('saveAddContactButton').addEventListener('click', async () => {
+        const newContact = {
+            name: document.getElementById('addName').value,
+            number: document.getElementById('addNumber').value,
+            email: document.getElementById('addEmail').value,
+            address: document.getElementById('addAddress').value,
+            photoUrl: document.getElementById('addPhotoUrl').value,
+            birthday: document.getElementById('addBirthday').value,
+            nickname: document.getElementById('addNickname').value,
+            relationship: document.getElementById('addRelationship').value,
+        };
+
+        try {
+            const response = await fetch(`${BASE_URL}/addContact`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newContact)
+            });
+
+            if (response.ok) {
+                alert('Contact added successfully');
+                $('#addContactModal').modal('hide');
+                fetchContacts();
+            } else {
+                console.error('Failed to add contact');
+            }
+        } catch (error) {
+            console.error('Error adding contact:', error);
+        }
     });
 
 </script>

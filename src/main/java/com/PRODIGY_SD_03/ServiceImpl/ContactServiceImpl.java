@@ -6,6 +6,8 @@ import com.PRODIGY_SD_03.Service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,9 +17,6 @@ public class ContactServiceImpl implements ContactService {
     @Autowired
     private ContactRepository contactRepository;
 
-   /* public ContactServiceImpl(ContactRepository contactRepository) {
-        this.contactRepository = contactRepository;
-    }*/
 
     @Override
     public Contact addContact(Contact contact) {
@@ -41,26 +40,14 @@ public class ContactServiceImpl implements ContactService {
        if(optContact.isPresent()){
            Contact contact = optContact.get();
 
-           contact.setFirstName(contactDetails.getFirstName());
-           contact.setMiddleName(contactDetails.getMiddleName());
-           contact.setLastName(contactDetails.getLastName());
-           contact.setPrimaryPhoneNumber(contactDetails.getPrimaryPhoneNumber());
-           contact.setSecondaryPhoneNumber(contactDetails.getSecondaryPhoneNumber());
-           contact.setPrimaryEmailAddress(contactDetails.getPrimaryEmailAddress());
-           contact.setSecondaryEmailAddress(contactDetails.getSecondaryEmailAddress());
+           contact.setName(contactDetails.getName());
+           contact.setNumber(contactDetails.getNumber());
+           contact.setEmail(contactDetails.getEmail());
            contact.setAddress(contactDetails.getAddress());
-           contact.setCompany(contactDetails.getCompany());
-           contact.setJobTitle(contactDetails.getJobTitle());
-           contact.setNotes(contactDetails.getNotes());
            contact.setPhotoUrl(contactDetails.getPhotoUrl());
-           contact.setWebsite(contactDetails.getWebsite());
            contact.setBirthday(contactDetails.getBirthday());
            contact.setNickname(contactDetails.getNickname());
            contact.setRelationship(contactDetails.getRelationship());
-           contact.setLabel(contactDetails.getLabel());
-           contact.setDepartment(contactDetails.getDepartment());
-           contact.setOfficeLocation(contactDetails.getOfficeLocation());
-           contact.setLanguage(contactDetails.getLanguage());
            return contactRepository.save(contact);
        }else{
             throw  new RuntimeException("Contact not found with id: " +id);
@@ -72,4 +59,49 @@ public class ContactServiceImpl implements ContactService {
             contactRepository.deleteById(id);
     }
 
+
+    // Search
+
+    @Override
+    public List<Contact> findContactByName(String firstName) {
+        return contactRepository.findByNameContainingIgnoreCase(firstName);
+    }
+
+    @Override
+    public List<Contact> findContactByNickname(String nickname) {
+        return contactRepository.findByNicknameContainingIgnoreCase(nickname);
+    }
+
+    @Override
+    public List<Contact> findContactByEmail(String email) {
+        return contactRepository.findContactByEmailContainingIgnoreCase(email);
+    }
+
+    @Override
+    public List<Contact> findContactByNumber(String number) {
+        return contactRepository.findContactByNumberContaining(number);
+    }
+
+
+    @Override
+    public List<Contact> findContactByBirthday(String birthday) {
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            java.sql.Date sqlDate = new java.sql.Date(format.parse(birthday).getTime());
+            return contactRepository.findContactByBirthdayContaining(sqlDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<Contact> findContactsByRelationship(String relationship) {
+        return contactRepository.findContactsByRelationshipContainingIgnoreCase(relationship);
+    }
+
+    @Override
+    public List<Contact> findContactByAddress(String address) {
+        return contactRepository.findContactByAddressContainingIgnoreCase(address);
+    }
 }
