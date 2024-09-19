@@ -435,7 +435,7 @@
     });
 
 
-    // Add new contact
+   /* // Add new contact
     $('#saveAddContactButton').on('click', function() {
         const newContactData = {
             name: $('#addName').val(),
@@ -458,7 +458,7 @@
             }
         });
     });
-
+*/
     // Clear Add Contact form
     $('#clearAddContactButton').on('click', function() {
         $('#addContactForm')[0].reset();
@@ -550,7 +550,7 @@
     });
 
 
-    // add cont
+   /* // add cont
 
     // Function to add a new contact
     document.getElementById('saveAddContactButton').addEventListener('click', async () => {
@@ -585,6 +585,65 @@
             console.error('Error adding contact:', error);
         }
     });
+*/
+
+
+
+   // ================================= FRESH Code =========
+    //Add contact
+    document.getElementById("saveAddContactButton").addEventListener("click", function (event) {
+        event.preventDefault(); // Prevent form submission
+
+        // Get form data
+        const contact = {
+            name: document.getElementById("addName").value,
+            primaryPhoneNumber: document.getElementById("addNumber").value,
+            primaryEmailAddress: document.getElementById("addEmail").value,
+            address: document.getElementById("addAddress").value,
+            photoUrl: document.getElementById("addPhotoUrl").value,
+            birthday: document.getElementById("addBirthday").value,
+            nickname: document.getElementById("addNickname").value,
+            relationship: document.getElementById("addRelationship").value
+        };
+
+        // Validate form (ensure name and email are filled)
+        if (!contact.name || !contact.primaryEmailAddress) {
+            alert("Name and Email are required.");
+            return;
+        }
+
+        // Make API request to add contact
+        fetch('api/contacts/addContact', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(contact)
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Failed to add contact.');
+                }
+            })
+            .then(data => {
+                alert('Contact added successfully!');
+                // Optionally close modal or reset form
+                $('#addContactModal').modal('hide');
+                document.getElementById("addContactForm").reset();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error adding contact: ' + error.message);
+            });
+    });
+
+    // Clear button functionality
+    document.getElementById("clearAddContactButton").addEventListener("click", function () {
+        document.getElementById("addContactForm").reset();
+    });
+
 
 </script>
 </body>
