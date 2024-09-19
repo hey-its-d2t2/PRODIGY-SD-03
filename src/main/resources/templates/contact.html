@@ -3,573 +3,289 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Management System</title>
-    <link rel="stylesheet" href="../static/css/styles.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <title>Contact Management</title>
     <style>
-        /* Navbar Custom Styles */
-        .navbar-custom {
-            background-color: #007bff;
-        }
-        .navbar-custom .navbar-brand,
-        .navbar-custom .nav-link {
-            color: white;
-        }
-        .navbar-custom .nav-link:hover {
-            color: #f8f9fa;
+        /* General Styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
         }
 
-        /* Contact Card Styles */
-        .contact-card {
-            border: 1px solid #e3e3e3;
-            border-radius: 0.25rem;
-            padding: 15px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            text-align: left;
-            position: relative;
+        /* Navbar */
+        .navbar {
             display: flex;
-            flex-direction: column;
-            align-items: flex-start; /* Center image and other elements horizontally */
-        }
-
-        .contact-card img {
-            border-radius: 50%;
-            margin-bottom: 10px;
-            width: 100px;
-            height: 100px;
-        }
-
-        .contact-card h4 {
-            text-align: center; /* Center the heading text */
-        }
-
-        .contact-card .btn-view {
-            position: relative;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            width: 100%;
-        }
-
-        /* View Card Styles */
-        .view-card img {
-            border-radius: 50%;
-            margin-bottom: 10px;
-            width: 100px;
-            height: 100px;
-        }
-
-        /* Modal Header Styles */
-        .modal-header {
-            background-color: #007bff;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1em;
+            background-color: #333;
             color: white;
         }
 
-        /* Modal Footer Button Styles */
-        .modal-footer .btn {
-            margin: 0 5px;
+        .navbar-center {
+            flex: 1;
+            display: flex;
+            justify-content: center;
         }
 
-        /* Form Group Label Styles */
-        .form-group label {
-            font-weight: bold;
+        .navbar-right {
+            display: flex;
+            align-items: center;
         }
+
+        .navbar-right input, select {
+            margin-right: 10px;
+            padding: 5px;
+        }
+
+        /* Contact Card */
+        .contacts-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 2em;
+        }
+
+        .contact-card {
+            width: 200px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 1em;
+            text-align: center;
+            margin: 10px;
+            background-color: #f9f9f9;
+        }
+
+        .contact-photo {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+        }
+
+        .btn-view {
+            display: block;
+            margin: 1em auto;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        /* Modal Styling */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2em;
+            border-radius: 10px;
+            width: 400px;
+            max-width: 90%;
+        }
+
+        .modal-header {
+            text-align: center;
+        }
+
+        .view-photo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+        }
+
+        .modal-footer {
+            text-align: center;
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            cursor: pointer;
+        }
+
+        /* Add/Edit Modal */
+        #addContactModal, #editContactModal {
+            padding: 20px;
+        }
+
+        button {
+            padding: 10px;
+            margin: 10px;
+            cursor: pointer;
+        }
+
     </style>
 </head>
 <body>
-
-<nav class="navbar navbar-expand-lg navbar-custom">
-    <a class="navbar-brand" href="#">Contact Management</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="#" data-toggle="modal" data-target="#addContactModal">Add Contact</a>
-            </li>
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <select class="form-control mr-sm-2" id="searchSelect">
-                <option value="name">Name</option>
-                <option value="email">Email</option>
-                <option value="phone">Phone</option>
-            </select>
-            <input class="form-control mr-sm-2" type="search" id="searchBox" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-light my-2 my-sm-0" type="button" onclick="searchContacts()">Search</button>
-        </form>
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="navbar-left">
+        <span>Contact Management System</span>
+    </div>
+    <div class="navbar-center">
+        <button class="btn-add" onclick="openAddContactModal()">Add Contact</button>
+    </div>
+    <div class="navbar-right">
+        <select id="searchCriteria">
+            <option value="name">Name</option>
+            <option value="email">Email</option>
+            <option value="phone">Phone</option>
+            <option value="address">Address</option>
+            <option value="relationship">Relationship</option>
+            <option value="nickname">Nickname</option>
+        </select>
+        <input type="text" id="searchBox" placeholder="Search...">
+        <button onclick="searchContacts()">Search</button>
     </div>
 </nav>
 
-<div class="container mt-4">
-    <h2>Contact List</h2>
-    <div class="row" id="contactList">
-        <!-- Contacts will be dynamically inserted here -->
+<!-- Contacts Display -->
+<div class="contacts-container">
+    <!-- Sample Contact Card -->
+    <div class="contact-card">
+        <img src="default-photo.jpg" alt="Contact Photo" class="contact-photo">
+        <button onclick="viewContact(1)" class="btn-view">View</button>
     </div>
 </div>
 
 <!-- View Contact Modal -->
-<div class="modal fade" id="viewContactModal" tabindex="-1" role="dialog" aria-labelledby="viewContactModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="viewContactModalLabel">View Contact</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body view-card" id="viewContactDetails">
-                <!-- Contact details will be dynamically inserted here -->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button class="btn btn-primary btn-view" data-id="${contact.id}" data-toggle="modal" data-target="#editContactModal">Edit</button>
-                <button type="button" class="btn btn-danger" id="deleteContactButton">Delete</button>
-            </div>
+<div id="viewContactModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeViewContactModal()">&times;</span>
+        <div class="modal-header">
+            <img src="default-photo.jpg" alt="Contact Photo" class="view-photo">
+        </div>
+        <div class="modal-body">
+            <p>Email: <span id="viewEmail">email@example.com</span></p>
+            <p>Phone: <span id="viewPhone">123-456-7890</span></p>
+            <p>Address: <span id="viewAddress">123 Street Name</span></p>
+            <!-- More details... -->
+        </div>
+        <div class="modal-footer">
+            <button onclick="openEditContactModal(1)">Edit</button>
+            <button onclick="openDeleteConfirmation(1)">Delete</button>
         </div>
     </div>
 </div>
 
 <!-- Edit Contact Modal -->
-<div class="modal fade" id="editContactModal" tabindex="-1" role="dialog" aria-labelledby="editContactModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editContactModalLabel">Edit Contact</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form id="editContactForm">
-                <div class="modal-body">
-                    <input type="hidden" id="editContactId">
-                    <!-- Form fields for editing -->
-                    <div class="form-group">
-                        <label for="editName">Name</label>
-                        <input type="text" class="form-control" id="editName" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="editNumber">Phone</label>
-                        <input type="text" class="form-control" id="editNumber">
-                    </div>
-                    <div class="form-group">
-                        <label for="editEmail">Email</label>
-                        <input type="email" class="form-control" id="editEmail">
-                    </div>
-                    <div class="form-group">
-                        <label for="editAddress">Address</label>
-                        <input type="text" class="form-control" id="editAddress">
-                    </div>
-                    <div class="form-group">
-                        <label for="editPhotoUrl">Photo URL</label>
-                        <input type="text" class="form-control" id="editPhotoUrl">
-                    </div>
-                    <div class="form-group">
-                        <label for="editBirthday">Birthday</label>
-                        <input type="date" class="form-control" id="editBirthday">
-                    </div>
-                    <div class="form-group">
-                        <label for="editNickname">Nickname</label>
-                        <input type="text" class="form-control" id="editNickname">
-                    </div>
-                    <div class="form-group">
-                        <label for="editRelationship">Relationship</label>
-                        <input type="text" class="form-control" id="editRelationship">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="saveEditContactButton">Save Changes</button>
-                </div>
-            </form>
-        </div>
+<div id="editContactModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeEditContactModal()">&times;</span>
+        <form id="editContactForm">
+            <!-- Edit Contact Form Fields -->
+            <input type="text" id="editName" placeholder="Name" required>
+            <input type="email" id="editEmail" placeholder="Email" required>
+            <input type="tel" id="editPhone" placeholder="Phone" required>
+            <textarea id="editAddress" placeholder="Address"></textarea>
+            <button type="button" onclick="updateContact(1)">Save</button>
+        </form>
+    </div>
+</div>
+
+<!-- Delete Confirmation Popup -->
+<div id="deleteConfirmationPopup" class="modal">
+    <div class="modal-content">
+        <p>Are you sure you want to delete this contact?</p>
+        <button onclick="deleteContact(1)">Delete</button>
+        <button onclick="closeDeleteConfirmation()">Cancel</button>
     </div>
 </div>
 
 <!-- Add Contact Modal -->
-<div class="modal fade" id="addContactModal" tabindex="-1" role="dialog" aria-labelledby="addContactModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addContactModalLabel">Add Contact</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form id="addContactForm">
-                <div class="modal-body">
-                    <!-- Form fields for adding -->
-                    <div class="form-group">
-                        <label for="addName">Name</label>
-                        <input type="text" class="form-control" id="addName" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="addNumber">Phone</label>
-                        <input type="text" class="form-control" id="addNumber">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="addEmail">Email</label>
-                        <input type="email" class="form-control" id="addEmail">
-                    </div>
-                    <div class="form-group">
-                        <label for="addAddress">Address</label>
-                        <input type="text" class="form-control" id="addAddress">
-                    </div>
-                    <div class="form-group">
-                        <label for="addPhotoUrl">Photo URL</label>
-                        <input type="text" class="form-control" id="addPhotoUrl">
-                    </div>
-                    <div class="form-group">
-                        <label for="addBirthday">Birthday</label>
-                        <input type="date" class="form-control" id="addBirthday">
-                    </div>
-                    <div class="form-group">
-                        <label for="addNickname">Nickname</label>
-                        <input type="text" class="form-control" id="addNickname">
-                    </div>
-                    <div class="form-group">
-                        <label for="addRelationship">Relationship</label>
-                        <input type="text" class="form-control" id="addRelationship">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="saveAddContactButton">Save Contact</button>
-                    <button type="button" class="btn btn-secondary" id="clearAddContactButton">Clear</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!--Delete Confirmation Modal -->
-<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirm Deletion</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to delete this contact? This action cannot be undone.
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id="cancelDeleteButton">Cancel</button>
-                <button type="button" class="btn btn-danger" id="confirmDeleteButton">Delete</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Success Modal -->
-<div id="successModal" class="modal">
+<div id="addContactModal" class="modal">
     <div class="modal-content">
-        <h3>Contact Added Successfully!</h3>
-        <p>Your new contact has been saved.</p>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <span class="close" onclick="closeAddContactModal()">&times;</span>
+        <form id="addContactForm">
+            <!-- Add Contact Form Fields -->
+            <input type="text" id="addName" placeholder="Name" required>
+            <input type="email" id="addEmail" placeholder="Email" required>
+            <input type="tel" id="addPhone" placeholder="Phone" required>
+            <textarea id="addAddress" placeholder="Address"></textarea>
+            <button type="button" onclick="saveContact()">Save</button>
+            <button type="button" onclick="clearAddContactForm()">Clear</button>
+        </form>
     </div>
 </div>
 
 <script>
-    // Fetch and display contacts
-    function fetchContacts() {
-        $.ajax({
-            url: '/api/contacts/getAllContacts',
-            method: 'GET',
-            success: function(data) {
-                const contactList = $('#contactList');
-                contactList.empty();
-                data.forEach(contact => {
-                    const contactCard = `
-                        <div class="col-md-4">
-                            <div class="contact-card">
-                                <img src="${contact.photoUrl || 'https://via.placeholder.com/100'}" alt="${contact.name}">
-                                <h4>${contact.name}</h4>
-                                <p><strong>Phone:</strong> ${contact.number || 'N/A'}</p>
-                                <p><strong>Email:</strong> ${contact.email || 'N/A'}</p>
-                                <button class="btn btn-primary btn-view" data-id="${contact.id}" data-toggle="modal" data-target="#viewContactModal">View</button>
-                            </div>
-                        </div>
-                    `;
-                    contactList.append(contactCard);
-                });
-            }
-        });
+    // Open and close modals
+    function openAddContactModal() {
+        document.getElementById('addContactModal').style.display = 'flex';
     }
 
-    fetchContacts();
+    function closeAddContactModal() {
+        document.getElementById('addContactModal').style.display = 'none';
+    }
 
-    // Search contacts
+    function openEditContactModal(id) {
+        // Fetch contact details by ID and populate the form
+        document.getElementById('editContactModal').style.display = 'flex';
+    }
+
+    function closeEditContactModal() {
+        document.getElementById('editContactModal').style.display = 'none';
+    }
+
+    function openDeleteConfirmation(id) {
+        document.getElementById('deleteConfirmationPopup').style.display = 'flex';
+    }
+
+    function closeDeleteConfirmation() {
+        document.getElementById('deleteConfirmationPopup').style.display = 'none';
+    }
+
+    function viewContact(id) {
+        // Fetch contact details by ID and populate view modal
+        document.getElementById('viewContactModal').style.display = 'flex';
+    }
+
+    function closeViewContactModal() {
+        document.getElementById('viewContactModal').style.display = 'none';
+    }
+
+    // CRUD functions
+    function saveContact() {
+        // Logic to save new contact
+        alert('Contact saved successfully!');
+        closeAddContactModal();
+    }
+
+    function updateContact(id) {
+        // Logic to update contact by ID
+        alert('Contact updated successfully!');
+        closeEditContactModal();
+    }
+
+    function deleteContact(id) {
+        // Logic to delete contact by ID
+        alert('Contact deleted successfully!');
+        closeDeleteConfirmation();
+    }
+
+    // Clear form inputs
+    function clearAddContactForm() {
+        document.getElementById('addContactForm').reset();
+    }
+
+    // Search function
     function searchContacts() {
-        const searchTerm = $('#searchBox').val();
-        const searchCriteria = $('#searchSelect').val();
-
-        $.ajax({
-            url: `/api/contacts/search?${searchCriteria}=${searchTerm}`,
-            method: 'GET',
-            success: function(data) {
-                const contactList = $('#contactList');
-                contactList.empty();
-                data.forEach(contact => {
-                    const contactCard = `
-                        <div class="col-md-4">
-                            <div class="contact-card">
-                                <img src="${contact.photoUrl || 'https://via.placeholder.com/100'}" alt="${contact.name}">
-                                <h4>${contact.name}</h4>
-                                <p><strong>Phone:</strong> ${contact.number || 'N/A'}</p>
-                                <p><strong>Email:</strong> ${contact.email || 'N/A'}</p>
-                                <button class="btn btn-primary btn-view" data-id="${contact.id}" data-toggle="modal" data-target="#viewContactModal">View</button>
-                            </div>
-                        </div>
-                    `;
-                    contactList.append(contactCard);
-                });
-            }
-        });
+        let criteria = document.getElementById('searchCriteria').value;
+        let query = document.getElementById('searchBox').value;
+        // Logic to perform search based on criteria and query
+        alert('Searching by ' + criteria + ' for ' + query);
     }
-
-    // View contact details and open Edit and Delete modals
-    $('#contactList').on('click', '.btn-view', function() {
-        const contactId = $(this).data('id');
-
-        $.ajax({
-            url: `/api/contacts/getContactsById/${contactId}`, // Replace with actual endpoint
-            method: 'GET',
-            success: function(contact) {
-                $('#viewContactDetails').html(`
-                <img src="${contact.photoUrl || 'https://via.placeholder.com/100'}" alt="${contact.name}" class="img-fluid mb-3">
-                <div class="form-group">
-                    <label for="viewName">Name</label>
-                    <input type="text" class="form-control" id="viewName" value="${contact.name}" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="viewNumber">Number</label>
-                    <input type="text" class="form-control" id="viewNumber" value="${contact.number || 'N/A'}" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="viewEmail">Email</label>
-                    <input type="text" class="form-control" id="viewEmail" value="${contact.email || 'N/A'}" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="viewAddress">Address</label>
-                    <input type="text" class="form-control" id="viewAddress" value="${contact.address || 'N/A'}" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="viewBirthday">Birthday</label>
-                    <input type="text" class="form-control" id="viewBirthday" value="${contact.birthday || 'N/A'}" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="viewNickname">Nickname</label>
-                    <input type="text" class="form-control" id="viewNickname" value="${contact.nickname || 'N/A'}" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="viewRelationship">Relationship</label>
-                    <input type="text" class="form-control" id="viewRelationship" value="${contact.relationship || 'N/A'}" readonly>
-                </div>
-
-            `);
-
-                $('#saveEditContactButton').data('id', contact.id);
-            }
-        });
-    });
-
-
-  /*  // // Edit contact
-    // $('#saveEditContactButton').on('click', function() {
-    //     const contactId = $(this).data('id');
-    //     const contactData = {
-    //         firstName: $('#editFirstName').val(),
-    //         middleName: $('#editMiddleName').val(),
-    //         lastName: $('#editLastName').val(),
-    //         primaryPhoneNumber: $('#editPrimaryPhoneNumber').val(),
-    //         secondaryPhoneNumber: $('#editSecondaryPhoneNumber').val(),
-    //         primaryEmailAddress: $('#editPrimaryEmailAddress').val(),
-    //         secondaryEmailAddress: $('#editSecondaryEmailAddress').val(),
-    //         address: $('#editAddress').val(),
-    //         company: $('#editCompany').val(),
-    //         jobTitle: $('#editJobTitle').val(),
-    //         notes: $('#editNotes').val(),
-    //         photoUrl: $('#editPhotoUrl').val(),
-    //         website: $('#editWebsite').val(),
-    //         birthday: $('#editBirthday').val(),
-    //         nickname: $('#editNickname').val(),
-    //         relationship: $('#editRelationship').val(),
-    //         label: $('#editLabel').val(),
-    //         department: $('#editDepartment').val(),
-    //         officeLocation: $('#editOfficeLocation').val(),
-    //         language: $('#editLanguage').val()
-    //     };
-    //
-    //     $.ajax({
-    //         url: `/api/contacts/updateContact/${contactId}`, // Replace with your actual endpoint
-    //         method: 'PUT',
-    //         contentType: 'application/json',
-    //         data: JSON.stringify(contactData),
-    //         success: function() {
-    //             $('#editContactModal').modal('hide');
-    //             fetchContacts();
-    //         }
-    //     });
-    // });*/
-
-    // Add new contact
-    $('#saveAddContactButton').on('click', function() {
-        const newContactData = {
-            name: $('#addName').val(),
-            number: $('#addNumber').val(),
-            email: $('#addEmail').val(),
-            address: $('#addAddress').val(),
-            photoUrl: $('#addPhotoUrl').val(),
-            birthday: $('#addBirthday').val(),
-            nickname: $('#addNickname').val(),
-            relationship: $('#addRelationship').val(),
-        };
-        $.ajax({
-            url: '/api/contacts/addContact',
-            method: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(newContactData),
-            success: function() {
-                $('#addContactModal').modal('hide');
-                fetchContacts();
-            }
-        });
-    });
-
-    // Clear Add Contact form
-    $('#clearAddContactButton').on('click', function() {
-        $('#addContactForm')[0].reset();
-    });
-
-
-    // new edit code
-    // edit.js
-
-    $(document).ready(function() {
-        // Load contact data into the edit form when the edit button is clicked
-        $('#contactList').on('click', '.btn-view', function() {
-            const contactId = $(this).data('id');
-
-            // Fetch contact details
-            $.ajax({
-                url: `/api/contacts/getContactsById/${contactId}`,
-                method: 'GET',
-                success: function(contact) {
-                    // Populate form fields with contact data
-                    $('#editName').val(contact.name || '');
-                    $('#editNumber').val(contact.number || '');
-                    $('#editEmail').val(contact.email || '');
-                    $('#editAddress').val(contact.address || '');
-                    $('#editPhotoUrl').val(contact.photoUrl || '');
-                    $('#editBirthday').val(contact.birthday || '');
-                    $('#editNickname').val(contact.nickname || '');
-                    $('#editRelationship').val(contact.relationship || '');
-
-                    // Store the contact ID for later use
-                    $('#saveEditContactButton').data('id', contact.id);
-                }
-            });
-        });
-
-        // Save updated contact data
-        $('#saveEditContactButton').on('click', function() {
-            const contactId = $(this).data('id');
-            const contactData = {
-                name: $('#editName').val(),
-                number: $('#editNumber').val(),
-                email: $('#editEmail').val(),
-                address: $('#editAddress').val(),
-                photoUrl: $('#editPhotoUrl').val(),
-                birthday: $('#editBirthday').val(),
-                nickname: $('#editNickname').val(),
-                relationship: $('#editRelationship').val(),
-            };
-
-            // Send updated contact data to the backend
-            $.ajax({
-                url: `/api/contacts/updateContact/${contactId}`,
-                method: 'PUT',
-                contentType: 'application/json',
-                data: JSON.stringify(contactData),
-                success: function() {
-                    // Hide the edit modal and refresh contact list
-                    $('#editContactModal').modal('hide');
-                    fetchContacts(); // Call the function to refresh the contact list
-                }
-            });
-        });
-    });
-
-//     delete
-
-    // Delete contact
-    $('#viewContactModal').on('click', '#deleteContactButton', function() {
-        const contactId = $('#saveEditContactButton').data('id');
-
-        // Show confirmation popup
-        $('#deleteConfirmationModal').modal('show');
-
-        $('#confirmDeleteButton').on('click', function() {
-            $.ajax({
-                url: `/api/contacts/deleteContact/${contactId}`,
-                method: 'DELETE',
-                success: function() {
-                    $('#deleteConfirmationModal').modal('hide');
-                    $('#viewContactModal').modal('hide');
-                    fetchContacts();
-                }
-            });
-        });
-
-        $('#cancelDeleteButton').on('click', function() {
-            $('#deleteConfirmationModal').modal('hide');
-        });
-    });
-
-
-    // add cont
-
-    // Function to add a new contact
-    document.getElementById('saveAddContactButton').addEventListener('click', async () => {
-        const newContact = {
-            name: document.getElementById('addName').value,
-            number: document.getElementById('addNumber').value,
-            email: document.getElementById('addEmail').value,
-            address: document.getElementById('addAddress').value,
-            photoUrl: document.getElementById('addPhotoUrl').value,
-            birthday: document.getElementById('addBirthday').value,
-            nickname: document.getElementById('addNickname').value,
-            relationship: document.getElementById('addRelationship').value,
-        };
-
-        try {
-            const response = await fetch(`${BASE_URL}/addContact`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(newContact)
-            });
-
-            if (response.ok) {
-                alert('Contact added successfully');
-                $('#addContactModal').modal('hide');
-                fetchContacts();
-            } else {
-                console.error('Failed to add contact');
-            }
-        } catch (error) {
-            console.error('Error adding contact:', error);
-        }
-    });
 
 </script>
 </body>

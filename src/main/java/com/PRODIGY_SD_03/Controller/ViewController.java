@@ -21,6 +21,6 @@ public class ViewController {
     public String viewContacts(Model model) {
         List<Contact> contacts = contactService.getAllContact();
         model.addAttribute("contacts", contacts);
-        return "contact";
+        return "contact2";
     }
 }
