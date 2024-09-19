@@ -254,8 +254,12 @@
         <form class="form-inline my-2 my-lg-0">
             <select class="form-control mr-sm-2" id="searchSelect">
                 <option value="name">Name</option>
+                <option value="nickname">Nickname</option>
                 <option value="email">Email</option>
                 <option value="phone">Phone</option>
+                <option value="birthday">Birthday</option>
+                <option value="relationship">Relationship</option>
+                <option value="address">Address</option>
             </select>
             <input class="form-control mr-sm-2" type="search" id="searchBox" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-light my-2 my-sm-0" type="button" onclick="searchContacts()">Search</button>
@@ -921,6 +925,7 @@ function showErrorPopup() {
     }
 }
 
+
 // Clear Add Contact Form
 document.getElementById('clearAddContactButton').addEventListener('click', function () {
     document.getElementById('addContactForm').reset();
@@ -989,8 +994,10 @@ function viewContact(contactId) {
                 </div>
             `;
             document.getElementById('viewContactDetails').innerHTML = viewContactDetails;
+
             document.getElementById('deleteContactButton').setAttribute('onclick', `confirmDelete(${contact.id})`);
             $('#viewContactModal').modal('show');
+
         })
         .catch(error => console.error('Error:', error));
 }
@@ -1023,15 +1030,72 @@ document.getElementById('saveEditContactButton').addEventListener('click', funct
         }).catch(error => console.error('Error:', error));
 });
 
-// Search Contacts
-function searchContacts() {
+//load edit contact
+function loadEditContact(contactId) {
+    fetch(`${apiBaseUrl}/getContactsById/${contactId}`)
+        .then(response => response.json())
+        .then(contact => {
+            document.getElementById('editContactId').value = contact.id;
+            document.getElementById('editName').value = contact.name;
+            document.getElementById('editNumber').value = contact.number || '';
+            document.getElementById('editEmail').value = contact.email || '';
+            document.getElementById('editAddress').value = contact.address || '';
+            document.getElementById('editPhotoUrl').value = contact.photoUrl || '';
+            document.getElementById('editBirthday').value = contact.birthday || '';
+            document.getElementById('editNickname').value = contact.nickname || '';
+            document.getElementById('editRelationship').value = contact.relationship || '';
+            $('#editContactModal').modal('show');
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+
+//Search contacts
+f/*unction searchContacts() {
     const searchType = document.getElementById('searchSelect').value;
     const searchValue = document.getElementById('searchBox').value;
-    fetch(`${apiBaseUrl}/search?${searchType}=${searchValue}`)
+
+    let endpoint = '';
+
+    // Determine the correct endpoint based on the search type
+    switch (searchType) {
+        case 'name':
+            endpoint = `/search/findByName/${searchValue}`;
+            break;
+        case 'email':
+            endpoint = `/search/findByEmail/${searchValue}`;
+            break;
+        case 'phone':
+            endpoint = `/search/findByNumber/${searchValue}`;
+            break;
+        case 'nickname':
+            endpoint = `/search/findByNickname/${searchValue}`;
+            break;
+        case 'birthday':
+            endpoint = `/search/birthday/${searchValue}`;
+            break;
+        case 'relationship':
+            endpoint = `/search/relationship/${searchValue}`;
+            break;
+        case 'address':
+            endpoint = `/search/address/${searchValue}`;
+            break;
+        default:
+            console.error('Invalid search type');
+            return;
+    }
+
+    fetch(`${apiBaseUrl}${endpoint}`)
         .then(response => response.json())
         .then(data => {
             const contactList = document.getElementById('contactList');
             contactList.innerHTML = ''; // Clear existing contacts
+
+            if (data.length === 0) {
+                contactList.innerHTML = '<p>No contacts found</p>';
+                return;
+            }
+
             data.forEach(contact => {
                 const contactCard = `
                     <div class="col-md-4 mb-3">
@@ -1039,8 +1103,8 @@ function searchContacts() {
                             <img class="card-img-top" src="${contact.photoUrl || 'default-image.png'}" alt="Contact Photo">
                             <div class="card-body">
                                 <h5 class="card-title">${contact.name}</h5>
-                                <p class="card-text">Phone: ${contact.phone}</p>
-                                <p class="card-text">Email: ${contact.email}</p>
+                                <p class="card-text">Phone: ${contact.primaryPhoneNumber || 'N/A'}</p>
+                                <p class="card-text">Email: ${contact.primaryEmailAddress || 'N/A'}</p>
                                 <button class="btn btn-primary" onclick="viewContact(${contact.id})">View</button>
                             </div>
                         </div>
@@ -1051,8 +1115,49 @@ function searchContacts() {
         })
         .catch(error => console.error('Error:', error));
 }
+*/
+// Search Contacts
+function searchContacts() {
+    const searchType = document.getElementById('searchSelect').value;
+    const searchValue = document.getElementById('searchBox').value;
 
+    fetch(`${apiBaseUrl}/search/findBy${capitalize(searchType)}/${encodeURIComponent(searchValue)}`)
+        .then(response => {
+            console.log('Response Status:', response.status); // Log status
+            return response.text(); // Read response as text first
+        })
+        .then(text => {
+            console.log('Response Text:', text); // Log raw response text
+            try {
+                const data = JSON.parse(text); // Attempt to parse JSON
+                const contactList = document.getElementById('contactList');
+                contactList.innerHTML = ''; // Clear existing contacts
+                data.forEach(contact => {
+                    const contactCard = `
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <img class="card-img-top" src="${contact.photoUrl || 'default-image.png'}" alt="Contact Photo">
+                                <div class="card-body">
+                                    <h5 class="card-title">${contact.name}</h5>
+                                    <p class="card-text">Phone: ${contact.phone}</p>
+                                    <p class="card-text">Email: ${contact.email}</p>
+                                    <button class="btn btn-primary" onclick="viewContact(${contact.id})">View</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    contactList.innerHTML += contactCard;
+                });
+            } catch (error) {
+                console.error('Error parsing JSON:', error);
+            }
+        })
+        .catch(error => console.error('Error fetching data:', error));
+}
 
+function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
 
 // Delete Contact
 function confirmDelete(contactId) {
