@@ -23,12 +23,12 @@ public class Contact {
     @Size(max = 100, min = 3, message = "Name must be between 3 and 100 characters.")
     private String name;
 
-    @NotBlank(message = "Primary phone number is required")
+    @NotBlank(message = "Phone number is required")
     @Pattern(regexp = "\\d{10}", message = "Phone number must be 10 digits")
     private String number;
 
 
-    @NotBlank(message = "Primary email address is required")
+    @NotBlank(message = "Email address is required")
     @Email(message = "Email should be valid")
     @Size(max = 100, message = "Email cannot exceed 100 characters")
     private String email;
