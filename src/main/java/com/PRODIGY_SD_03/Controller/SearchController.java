@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/contacts/search/")
+@RequestMapping("contacts/search/")
 public class SearchController {
 
 
@@ -48,7 +48,7 @@ public class SearchController {
         return new ResponseEntity<>(contacts, HttpStatus.OK);
     }
 
-    @GetMapping("/findByNumber/{number}")
+    @GetMapping("/findByPhone/{number}")
     public ResponseEntity<List<Contact>> findContactByPhoneNumber(@PathVariable("number") String number) {
         List<Contact> contacts = contactService.findContactByNumber(number);
         if (contacts.isEmpty()) {
@@ -57,7 +57,7 @@ public class SearchController {
         return new ResponseEntity<>(contacts, HttpStatus.OK);
     }
 
-    @GetMapping("/birthday/{date}")
+    @GetMapping("/findByBirthday/{date}")
     public ResponseEntity<List<Contact>> findContactByBirthday(@PathVariable("date") String date) {
         List<Contact> contacts = contactService.findContactByBirthday(date);
         if (contacts == null || contacts.isEmpty()) {
@@ -66,7 +66,7 @@ public class SearchController {
         return new ResponseEntity<>(contacts, HttpStatus.OK);
     }
 
-    @GetMapping("/relationship/{relation}")
+    @GetMapping("/findByRelationship/{relation}")
     public ResponseEntity<List<Contact>> findContactsByRelationship(@PathVariable("relation") String relation) {
         List<Contact> contacts = contactService.findContactsByRelationship(relation);
         if (contacts.isEmpty()) {
@@ -75,7 +75,7 @@ public class SearchController {
         return new ResponseEntity<>(contacts, HttpStatus.OK);
     }
 
-    @GetMapping("address/{addr}")
+    @GetMapping("findByAddress/{addr}")
     public ResponseEntity<List<Contact>> findContactByAddress(@PathVariable("addr") String addr) {
         List<Contact> contacts = contactService.findContactByAddress(addr);
         if (contacts == null || contacts.isEmpty()) {
