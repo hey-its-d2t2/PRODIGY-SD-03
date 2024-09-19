@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -17,10 +16,10 @@ public class ViewController {
     @Autowired
     ContactService contactService;
 
-    @GetMapping("/cont")
+    @GetMapping
     public String viewContacts(Model model) {
         List<Contact> contacts = contactService.getAllContact();
         model.addAttribute("contacts", contacts);
-        return "contact2";
+        return "contact2-1";
     }
 }
