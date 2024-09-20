@@ -1,5 +1,8 @@
 # Simple Contact Management System 📞,
 
+![home](https://github.com/user-attachments/assets/573e0d1a-30c5-4196-876f-c199036f9e29)
+
+
 ## Overview 🌟
 As part of my software development internship at Prodigy Infotech, I developed a Simple Contact Management System. This web-based application enables users to efficiently manage their contacts, offering features such as adding new contacts, viewing the contact list, editing existing entries, and deleting contacts. The application leverages a robust technology stack to ensure scalability, reliability, and a user-friendly experience.
 
@@ -194,25 +197,53 @@ spring.mvc.static-path-pattern=/resources/**
 # Project Snapshots 📸
 
 - **Home page**
+
+    ![home](https://github.com/user-attachments/assets/29ccf9cf-b9fe-4ba2-8767-97048441edf2)
+
 - **Add Contact Model**
-  
+
+    ![addcontact](https://github.com/user-attachments/assets/5311da82-5669-4548-b90f-546240ee4265)
+
 - **View Contact Model**
-    
+
+    ![view](https://github.com/user-attachments/assets/d01dbaa2-cf57-4f10-b3f3-605564e53d65)
+
 - **Update Contact Model**
+
+    ![edit](https://github.com/user-attachments/assets/d0860d69-3302-4bde-b6f2-edab1c243313)
   
+- **Search Contact:**
+
+    ![search](https://github.com/user-attachments/assets/65b17397-d517-4e20-8517-cc681c23a590)
+
 ## Pop-ups for Actions 🎉
- - **Save Success:** "Contact saved successfully!" 🎉
-   
+ 
+ - **Save Success:** "Contact saved successfully!" 🎉  
+ 
+    ![sucess contact](https://github.com/user-attachments/assets/281a6e2d-7db1-4aef-8407-54aa42dd1e4a)
+
 - **Save Error:** "Error saving contact. Please try again." ❌
-  
+
+    ![erroradd](https://github.com/user-attachments/assets/24457d83-9191-4cd6-90db-90b1ea914b86)
+
 - **Update Success:** "Contact updated successfully!" 🎉
-  
+
+    ![editSuces](https://github.com/user-attachments/assets/983135ab-b30c-4130-a249-58506a7e6f38)
+
 - **Update Error:** "Error updating contact. Please try again." ❌
-  
-- **Delete Success:** "Contact deleted successfully!" 🎉
-  
+
+    ![errEdit](https://github.com/user-attachments/assets/ce936b1c-d106-4446-ab25-5acded68f50c)
+
+- **Delete Confirem & Success:** "Contact deleted successfully!" 🎉
+    
+    -  ![delete conf](https://github.com/user-attachments/assets/e6cb50cc-77c5-40d2-acf9-d040689426bf)
+      
+    -  ![deletesucess](https://github.com/user-attachments/assets/4f6ff147-5395-420d-8d59-daa3af7a12c2)
+
 - **Search No Data Found**: "No Data Found"❌
   
+    ![search err](https://github.com/user-attachments/assets/273815ae-7115-4709-99bd-af21bb16f601)
+
 ### Copyright © 2024 Deepak Singh
 
 All rights reserved. This documentation and the associated software are protected by copyright law. You may not reproduce, distribute, or create derivative works from this documentation without permission from the copyright owner.
