@@ -90,13 +90,135 @@ spring.mvc.static-path-pattern=/resources/**
 | `/api/contacts/addContact`        | POST   | Add a new contact                       |
 | `/api/contacts/updateContact/{id}`| PUT    | Update an existing contact              |
 | `/api/contacts/deleteContact/{id}`| DELETE | Delete a contact                        |
-| `/api/contacts/birthday/{date}`   | GET    | Retrieve contacts by birthday           |
-/api/contacts/search/findByName/{name}`       | GET    | Search for contacts by name            |
+| `api/contacts/search/findByName/{name}`       | GET    | Search for contacts by name            |
 | `/api/contacts/search/findByemail/{email}`     | GET    | Search for contacts by email           |
 | `/api/contacts/search/findBynumber/{number}`   | GET    | Search for contacts by phone number    |
 | `/api/contacts/search/findBybirthday/{date}`   | GET    | Search for contacts by birthday date   |
 | `/api/contacts/search/findBynickname/{nickname}`| GET   | Search for contacts by nickname        |
 | `/api/contacts/search/findByrelationship/{relationship}`| GET | Search for contacts by relationship    |
 | `/api/contacts/search/findByaddress/{address}` | GET    | Search for contacts by address         |
+
+## Request and Response Examples 📜
+- **Add Contact Request:**
+
+   ```
+    `POST /api/contacts/addContact`
+    {
+        "name": "John Doe",
+        "number": "1234567890",
+        "email": "john.doe@example.com",
+        "address": "123 Main St",
+        "photoUrl": "http://example.com/photo.jpg",
+        "birthday": "2000-01-01",
+        "nickname": "Johnny",
+        "relationship": "Friend"
+  }
+    ```
+- **Add Contact Response:**
+
+    ```
+    200 OK
+      {
+        "id": 1,
+        "name": "John Doe",
+        "number": "1234567890",
+        "email": "john.doe@example.com",
+        "address": "123 Main St",
+        "photoUrl": "http://example.com/photo.jpg",
+        "birthday": "2000-01-01",
+        "nickname": "Johnny",
+        "relationship": "Friend"
+     }
+    
+    ```
+- **Update Contact Request:**
+    ```
+    PUT /api/contacts/updateContact/1
+    {
+      "name": "Johnathan Doe",
+      "number": "0987654321",
+      "email": "johnathan.doe@example.com",
+      "address": "456 Main St",
+      "photoUrl": "http://example.com/newphoto.jpg",
+      "birthday": "2000-01-01",
+      "nickname": "Johnny",
+      "relationship": "Best Friend"
+    }
+    ```
+- **Update Contact Response:**
+    ```
+    {
+      "id": 1,
+      "name": "Johnathan Doe",
+      "number": "0987654321",
+      "email": "johnathan.doe@example.com",
+      "address": "456 Main St",
+      "photoUrl": "http://example.com/newphoto.jpg",
+      "birthday": "2000-01-01",
+      "nickname": "Johnny",
+      "relationship": "Best Friend"
+    }
+    ```
+
+  ### Search Requests
+  - **Search by Name Request:**
+    ```
+      GET /api/contacts/search/findByname/John
+    ```
+  - **Responce**
+    ```
+    [
+      {
+          "id": 1,
+          "name": "John Doe",
+          "number": "1234567890",
+          "email": "john.doe@example.com",
+          "address": "123 Main St",
+          "photoUrl": "http://example.com/photo.jpg",
+          "birthday": "2000-01-01",
+          "nickname": "Johnny",
+          "relationship": "Friend"
+      }
+    ]
+    ```
+### Similarrly all search request and responces
+| Method    | Search API URL |
+|-----------|----------------|
+| GET       | `/api/contacts/search/findByemail/{email}`|
+| GET       | `/api/contacts/search/findBynumber/{number}`|
+| GET       | `/api/contacts/search/findBybirthday/{date}`|
+| GET       | `/api/contacts/search/findBynickname/{nickname}`|
+| GET       | `/api/contacts/search/findByrelationship/{relationship}`|
+| GET       | `/api/contacts/search/findByaddress/{address}`|
+
+# Project Snapshots 📸
+
+- **Home page**
+- **Add Contact Model**
+  
+- **View Contact Model**
+    
+- **Update Contact Model**
+  
+## Pop-ups for Actions 🎉
+ - **Save Success:** "Contact saved successfully!" 🎉
+   
+- **Save Error:** "Error saving contact. Please try again." ❌
+  
+- **Update Success:** "Contact updated successfully!" 🎉
+  
+- **Update Error:** "Error updating contact. Please try again." ❌
+  
+- **Delete Success:** "Contact deleted successfully!" 🎉
+  
+- **Search No Data Found**: "No Data Found"❌
+  
+### Copyright © 2024 Deepak Singh
+
+All rights reserved. This documentation and the associated software are protected by copyright law. You may not reproduce, distribute, or create derivative works from this documentation without permission from the copyright owner.
+
+For inquiries, please contact:deepsinghkumar01@gmail.com
+
+
 
 
