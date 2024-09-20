@@ -41,8 +41,6 @@ public class Contact {
     @Temporal(TemporalType.DATE)
     private Date birthday; // Optional birthday field
 
-   //private String birthday; // Optional birthday field
-
     @Column(name = "nickname")
     @Size(max = 25, message = "Nickname cannot exceed 255 characters")
     private String nickname; // Optional nickname
